@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StoreProject.Models;
 using StoreProject.DAL.ReposatoryClasess;
-using StoreProject.Controllers;
 
 namespace StoreProject
 {
