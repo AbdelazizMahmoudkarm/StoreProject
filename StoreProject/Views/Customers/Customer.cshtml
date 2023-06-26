@@ -40,9 +40,13 @@
                             {
                                 <td>+ @item.Dept </td>
                             }
-                            else
+                            else if (item.Dept < 0)
                             {
                                 <td>- @Math.Abs(item.Dept)</td>
+                            }
+                            else
+                            {
+                                <td> @item.Dept</td>
                             }
                         }
             </tr>

@@ -9,8 +9,8 @@ namespace StoreProject.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly BaseEntity<Bill> _billRepo;
-        public CustomersController(BaseEntity<Bill> billRepo) => _billRepo = billRepo;
+        private readonly BillRepo _billRepo;
+        public CustomersController(BillRepo billRepo) => _billRepo = billRepo;
         public IActionResult Index() => View();
         public async Task<IActionResult> Customer(bool isbuy = false)
         {

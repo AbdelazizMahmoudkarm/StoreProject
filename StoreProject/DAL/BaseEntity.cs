@@ -12,18 +12,7 @@ namespace StoreProject.DAL
     public abstract class BaseEntity<T>  where T :class
     {
         private readonly OperationHelper  _operationHelper;
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/BillItemRepo/*'/>
-        public virtual BillItemRepo BillItemRepo { get; }
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/CustomerRepo/*'/>
-        public virtual CustomerRepo CustomerRepo {  get; }
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/PaymentRepo/*'/>
-        public virtual PaymentRepo PaymentRepo {  get; }
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/CateroryRepo/*'/>
-        public virtual CategoryRepo CateroryRepo { get; }
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/CateroryItemRepoRepo/*'/>
-        public virtual ItemRepo ItemRepo { get; }
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/StoreRepo/*'/>
-        public virtual StoreRepo StoreRepo { get; }
+        
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/BaseEntityctor/*'/>
         public BaseEntity(OperationHelper operationHelper) => _operationHelper = operationHelper;
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/GetAsQueryable/*'/>

@@ -16,11 +16,11 @@ namespace StoreProject.DAL.ReposatoryClasess
         /// <summary>
         /// The details of the store which contain the color, measure and some other details 
         /// </summary>
-        public override ItemRepo ItemRepo {  get; }
+        public  ItemRepo ItemRepo {  get; }
         /// <summary>
         /// Represent the name of stores
         /// </summary>
-        public override StoreRepo StoreRepo { get; }
+        public  StoreRepo StoreRepo { get; }
         /// <summary>
         /// Constractor which use to define <paramref name="itemRepo"/> <paramref name="operationHelper"/><paramref name="storeRepo"/> to constract our object 
         /// </summary>

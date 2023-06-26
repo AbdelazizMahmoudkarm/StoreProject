@@ -30,7 +30,7 @@ namespace StoreProject.DAL.ReposatoryClasess
         /// </summary>
         /// <param name="filter">expression func which take Type of brand class and return bool</param>
         /// <returns>Brand  entity as queryable</returns>
-        public override IQueryable<Brand> GetAsQueryable(Expression<Func<Brand, bool>> filter)
+        public override IQueryable<Brand> GetAsQueryable(Expression<Func<Brand, bool>> filter=default)
             => CheckNull(filter);
         /// <summary>
         /// Insert Barnd with it's details to database

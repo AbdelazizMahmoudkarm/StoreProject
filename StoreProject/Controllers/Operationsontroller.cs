@@ -12,8 +12,8 @@ namespace StoreProject.Models
     [Authorize(Roles = "Admin")]
     public class OperationsController : Controller
     {
-        private readonly BaseEntity<Bill> _billRepo;
-        public OperationsController(BaseEntity<Bill> billRepo)=>
+        private readonly BillRepo _billRepo;
+        public OperationsController(BillRepo billRepo)=>
             _billRepo = billRepo;
    
         public IActionResult Index()

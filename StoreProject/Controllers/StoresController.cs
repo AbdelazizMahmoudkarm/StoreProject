@@ -10,11 +10,8 @@ namespace StoreProject.Controllers
     [Authorize(Roles ="Admin")]
     public class StoresController : Controller
     {
-        private readonly BaseEntity<Store> _storeRepo;
-        public StoresController(BaseEntity<Store> storeRepo)
-        {
-            this._storeRepo = storeRepo;
-        }
+        private readonly StoreRepo _storeRepo;
+        public StoresController(StoreRepo storeRepo) => _storeRepo = storeRepo;
         // GET: Stores
         public async Task<IActionResult> Index(int? index)
         {

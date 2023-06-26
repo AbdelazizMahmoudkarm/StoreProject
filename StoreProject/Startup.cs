@@ -44,17 +44,9 @@ namespace StoreProject
                 option.Filters.Add(new AuthorizeFilter(policy));
             });
            
-            services.AddScoped<BaseEntity<Bill>, BillRepo>();
-            services.AddScoped<BillsController>();
-            services.AddScoped<BaseEntity<Color>, ColorRepo>();
-            services.AddScoped<BaseEntity<Measure>, MeasureRepo>();
-            services.AddScoped<BaseEntity<Store>, StoreRepo>();
-            services.AddScoped<BaseEntity<Brand>, BrandRepo>();
-            services.AddScoped<BaseEntity<BrandImage>, BrandImageRepo>();
-            services.AddScoped<BaseEntity<Category>, CategoryRepo>();
-            services.AddScoped<BaseEntity<Item>, ItemRepo>();
-            services.AddScoped<BaseEntity<ItemQuantity>, ItemQauntityRepo>();
-
+           
+       
+            services.AddScoped<BillRepo>();
             services.AddScoped<CustomerRepo>();
             services.AddScoped<BillItemRepo>();
             services.AddScoped<PaymentRepo>();

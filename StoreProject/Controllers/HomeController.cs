@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StoreProject.DAL;
+using StoreProject.DAL.ReposatoryClasess;
 using StoreProject.Models;
 
 namespace StoreProject.Controllers
@@ -9,9 +10,9 @@ namespace StoreProject.Controllers
     public class HomeController : Controller
     {
         //  private readonly ILogger<HomeController> _logger;
-        private readonly BaseEntity<Brand> _brandRepo;
+        private readonly BrandRepo _brandRepo;
 
-        public HomeController(BaseEntity<Brand> brandRepo)
+        public HomeController(BrandRepo brandRepo)
         {
             _brandRepo = brandRepo;
         }

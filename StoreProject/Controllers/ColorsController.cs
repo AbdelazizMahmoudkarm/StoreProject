@@ -9,9 +9,9 @@ namespace StoreProject.Controllers
     [Authorize(Roles = "Admin")]
     public class ColorsController : Controller
     {
-        private readonly BaseEntity<Color> _colorRepo;
+        private readonly ColorRepo _colorRepo;
 
-        public ColorsController(BaseEntity<Color> colorrepo) => _colorRepo = colorrepo;
+        public ColorsController(ColorRepo colorrepo) => _colorRepo = colorrepo;
         public async Task<IActionResult> Index(int ? pageNumber)
         {
             var data = await  PaginatedList<Color>.CreateAsync(_colorRepo.GetAll(x=>x.IsDelete==false), pageNumber ?? 1, 9);

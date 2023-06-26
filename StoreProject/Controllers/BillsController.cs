@@ -6,15 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using StoreProject.DAL;
+using StoreProject.DAL.ReposatoryClasess;
 using StoreProject.Models;
 
 namespace StoreProject.Controllers
 {
     public class BillsController : Controller
     {
-        private readonly BaseEntity<Bill> _billRepo;
-       private readonly BaseEntity<Brand> _brandRepo;
-        public BillsController(BaseEntity<Bill> billRepo, BaseEntity<Brand> brandRepo)
+        private readonly BillRepo _billRepo;
+       private readonly BrandRepo _brandRepo;
+        public BillsController(BillRepo billRepo, BrandRepo brandRepo)
         {
             _billRepo = billRepo;
            _brandRepo = brandRepo;
@@ -156,14 +157,7 @@ namespace StoreProject.Controllers
         public async Task<IActionResult> DeleteBillItem(int billItemId)
         {
             TempData.Keep("isbuy");
-            await _billRepo.BillItemRepo.DeleteEntityAsync(billItemId);
-            return Ok();
-        }
-        public async Task<IActionResult> DeleteitemsAsync(int id)
-        {
-            if (id != 0 && User.IsInRole("Admin"))
-                return Ok(await _billRepo.ItemRepo.ItemRepo.DeleteEntityAsync(id));
-            return Ok("غير مصرح لك بالحذف");
+            return Ok(await _billRepo.BillItemRepo.DeleteEntityAsync(billItemId));
         }
         public async Task<IActionResult> Delete(int id)
         {

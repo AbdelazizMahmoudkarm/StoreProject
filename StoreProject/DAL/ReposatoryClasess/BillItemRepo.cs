@@ -21,7 +21,7 @@ namespace StoreProject.DAL.ReposatoryClasess
         /// <summary>
         /// It represnt the store which has the name of items
         /// </summary>
-        public override CategoryRepo CateroryRepo { get; }
+        public  CategoryRepo CateroryRepo { get; }
         /// <summary>
         /// Generate the objects using dependancy injection such as:  <paramref name="cateroryRepo"/>, <paramref name="itemQauntity"/><paramref name="operationHelper"/>
         /// and pass the OperationHelper to base class
@@ -95,8 +95,8 @@ namespace StoreProject.DAL.ReposatoryClasess
                             existBillIItem.Quantity -= entity.DiscardQuantity;
                             await _operationHelper.UpdateDbAsync(existBillIItem);
                         }
-                        
                     }
+                        
                     else if (entity.ItemName != existBillIItem.ItemName || entity.SalePrice != existBillIItem.SalePrice)
                     {
                         existBillIItem.SalePrice = entity.SalePrice;
@@ -113,14 +113,18 @@ namespace StoreProject.DAL.ReposatoryClasess
                     bool isOk;
                     if (CheckIfBuyBill(x => x.BillId == entity.BillId))
                         isOk = await ItemQauntityRepo.PlusQuantityAsync(entity.ItemQuantityId, entity.Quantity);
-                    else
-                         isOk = await ItemQauntityRepo.MinusQuantityAsync(entity.ItemQuantityId, entity.Quantity);
-                    if (isOk && oldBillItem.SalePrice == entity.SalePrice)
+                    else if (oldBillItem.SalePrice == entity.SalePrice) 
                     {
-                        oldBillItem.ItemName = entity.ItemName;
-                        oldBillItem.Quantity += entity.Quantity;
-                        await _operationHelper.UpdateDbAsync(oldBillItem);
+                        isOk = await ItemQauntityRepo.MinusQuantityAsync(entity.ItemQuantityId, entity.Quantity);
+                        if (isOk)
+                        {
+                            oldBillItem.ItemName = entity.ItemName;
+                            oldBillItem.Quantity += entity.Quantity;
+                            await _operationHelper.UpdateDbAsync(oldBillItem);
+                        }
                     }
+                    else
+                        await AddEntityAsync(entity);
                 }
                 else
                     await AddEntityAsync(entity);

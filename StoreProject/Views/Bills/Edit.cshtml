@@ -645,16 +645,16 @@
                { $("#tot").val(Math.abs(newtotlalprice).toFixed(2)+oldtotalpriceforallitems);}        
         close();
     }
-     function de(price, purchaseid, name) {
+     function de(price, billItemId, name) {
         var result = confirm("هل انت متاكد من حذف " + name);
         if (result) {
             $.ajax({
-                url: "/Bills/deleteitems",
+                url: "/Bills/DeleteBillItem",
                 type: "POST",
-                data: { id: purchaseid },
+                data: { billItemId },
                 success: function (data) {
                     if (data == true) {
-                        $("#_" + purchaseid).css("background-color", "#ff6347").fadeOut(800, function () {
+                        $("#_" + billItemId).css("background-color", "#ff6347").fadeOut(800, function () {
                             $(this).remove();
                             var total = parseFloat($("#tot").val()) - parseFloat(price);
                             $("#tot").val(total.toFixed(2));

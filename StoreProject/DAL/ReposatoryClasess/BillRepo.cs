@@ -15,15 +15,13 @@ namespace StoreProject.DAL
     {
         private readonly OperationHelper _operationHelper;
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/BillItemRepo/*'/>
-        public override BillItemRepo    BillItemRepo    { get;}
-
+        public  BillItemRepo    BillItemRepo    { get;}
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/CustomerRepo/*'/>
-        public override CustomerRepo    CustomerRepo    { get;}
-
+        public  CustomerRepo    CustomerRepo    { get;}
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/PaymentRepo/*'/>
-        public override PaymentRepo  PaymentRepo    { get;}
+        public  PaymentRepo  PaymentRepo    { get;}
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/CateroryRepo/*'/>
-        public override CategoryRepo CateroryRepo { get;}
+        public  CategoryRepo CateroryRepo { get;}
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/BillRepo_ctor/*'/>
         public BillRepo(BillItemRepo billItemrepo, OperationHelper operationHelper, CustomerRepo customerRepo,
         PaymentRepo paymentRepo, CategoryRepo categoryRepo) : base(operationHelper)

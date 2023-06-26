@@ -11,12 +11,9 @@ namespace StoreProject.Controllers
     public class MeasurementsController : Controller
     {
 
-        private readonly BaseEntity<Measure> _measurerepo;
+        private readonly MeasureRepo _measurerepo;
 
-        public MeasurementsController(BaseEntity<Measure> measurrepo)
-        {
-            this._measurerepo = measurrepo;
-        }
+        public MeasurementsController(MeasureRepo measurrepo) => _measurerepo = measurrepo;
 
         // GET: Measurements
         public async Task<IActionResult> Index(int? pageNumber)

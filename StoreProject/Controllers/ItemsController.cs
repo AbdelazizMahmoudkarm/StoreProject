@@ -6,14 +6,15 @@ using Microsoft.EntityFrameworkCore;
 using StoreProject.DAL;
 using StoreProject.Models;
 using Microsoft.AspNetCore.Authorization;
+using StoreProject.DAL.ReposatoryClasess;
 
 namespace StoreProject.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class ItemsController : Controller
     {
-        private readonly BaseEntity<Category> _categoryRepo;
-        public ItemsController(BaseEntity<Category> itemRepo) => _categoryRepo = itemRepo;
+        private readonly CategoryRepo _categoryRepo;
+        public ItemsController(CategoryRepo itemRepo) => _categoryRepo = itemRepo;
         [Produces("application/json")]
         public IActionResult SearchItem(String search)
         {
