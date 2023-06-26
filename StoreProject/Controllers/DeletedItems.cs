@@ -27,16 +27,5 @@ namespace StoreProject.Controllers
             var items=_itemDetailRepo.GetAsQueryable(x=>x.IsDelete==true).Include(x=>x.Measure).Include(x=>x.Color).Include(x=>x.Category);
             return View(await PaginatedList<Item>.CreateAsync(items, pageNumber ?? 1, 9));
         }
-        //public IActionResult Restore(int id)
-        //{
-        //    var deleteditems = _context.ItemDetails.Find(id);
-        //    var item = _context.Items.Where(x => x.itemId == deleteditems.itemId).FirstOrDefault();
-        //    deleteditems.isdel = false;
-        //    item.isdel = false;
-        //    _context.Update(deleteditems);
-        //    _context.Update(item);
-        //    _context.SaveChanges();
-        //    return Ok();
-        //}
     }
 }
