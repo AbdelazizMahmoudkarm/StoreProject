@@ -1,0 +1,60 @@
+﻿
+<div class="form-horizontal">
+    <div class="form-group form-row">
+        <input hidden id="categoryId" />
+        <input hidden id="itemId" />
+        <label class="control-label col-md-1">
+            سعرالشراء
+        </label>
+        <div class="col-md-2" style="display:inline-block; margin-bottom:2px">
+            <input type="number" id="abuyprice" placeholder="سعر الشراء" class="form-control" />
+        </div>
+        <label class="control-label col-md-1">
+            سعرالبيع
+        </label>
+        <div class="col-md-2" style="display:inline-block; margin-bottom:2px">
+            <input type="number" id="asaleprice" placeholder="سعر البيع" class="form-control" />
+        </div>
+        <label class="control-label col-md-1">
+            الكميه
+        </label>
+        <div class="col-md-2" style="display:inline-block">
+            <input type="number" id="aquantity" placeholder="الكميه" class="form-control" />
+        </div>
+      @*  <label class="control-label col-md-1">
+            الكرتونه
+        </label>
+        <div class="col-md-2" style="display:inline-block">
+            <input type="number" id="cartona" placeholder="الكرتونه" class="form-control" />
+        </div>*@
+    </div>
+</div>
+<div class="modal-footer">
+    @*<button type="reset" style="margin:5px;width:70px" class="btn btn-danger" data-dismiss="modal" onclick=" showmodal()">الغاء</button>*@
+    <button onclick="add()" style="margin:5px;width:70px" type="submit" class="btn btn-success">حفظ</button>
+</div>
+<script>
+    function add() {
+        var ItemQuantity = new Object();
+        ItemQuantity.ItemId = $("#itemId").val();
+        ItemQuantity.Quantity = $("#aquantity").val();
+        ItemQuantity.SalePrice = $("#asaleprice").val();
+        ItemQuantity.BuyPrice = $("#abuyprice").val();
+       // ItemQuantity.Cartona = $("#cartona").val();
+        $.ajax({
+            type: "POST",
+            url: "/Items/CreateItemQuantity",
+            data: ItemQuantity,
+            success: function (name) {
+                $("#additems").modal("hide");
+                showmodal(categoryId, name, '/Items/Items');
+                // $("#Showdetails").modal("show");
+            },
+            error: function () {
+                alert("حدث خطا من فضلك تاكد من وجود الوحده مسبقا!!!");
+            }
+
+        });
+
+    }
+</script>

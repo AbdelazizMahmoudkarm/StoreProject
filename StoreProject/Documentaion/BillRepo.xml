@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<docs>
+	<members name="billRepo">
+		<BillRepo>
+			<summary>
+				Use to deal with all things about buy or sale
+			</summary>
+			<remarks>
+				This class can access to BillItemRepo class , CustomerRepo class ,
+				PaymentRepo and CateroryRepo class All these  classes has direct and indirect relation with this class,
+				in addition to it has the private access to OprationHelper Class for Control the DB
+			</remarks>
+		</BillRepo>
+		<BillItemRepo>
+			<summary>
+				<value>
+					A one Bill to many BillItemRepo Relationship which has all bill details such as ItemName,
+					Price and Quantity etc...
+				</value>
+			</summary>
+		</BillItemRepo>
+		<CustomerRepo>
+			<summary>
+				<value> A One Customer to many Bill Relationship which has all Customer data</value>
+			</summary>
+		</CustomerRepo>
+		<PaymentRepo>
+			<summary>
+				<values> A one Bill to many Payment which has the pays for bill and it has some info about Bill and Customer </values>
+			</summary>
+		</PaymentRepo>
+		<CateroryRepo>
+			<summary>
+				<values> Get all data about store such as items, color, measure ,etc...  </values>
+			</summary>
+		</CateroryRepo>
+		<BillRepo_ctor>
+			<summary>
+				Generate the objects using dependancy injection such as:  <paramref name="categoryRepo"/>, <paramref name="customerRepo"/>,
+				<paramref name="operationHelper"/>,<paramref name="paymentRepo"/>,<paramref name="billItemrepo"/>
+				and pass the OperationHelper to base 
+			</summary>
+			<param name="billItemrepo"></param>
+			<param name="operationHelper"></param>
+			<param name="customerRepo"></param>
+			<param name="paymentRepo"></param>
+			<param name="categoryRepo"></param>
+		</BillRepo_ctor>
+		<GetAsQueryable>
+			<summary>
+				Get data with lambda expression Type of bill if exist if not it return  all the data
+			</summary>
+			<param name="filter"></param>
+			<returns> Bill as Querable </returns>
+		</GetAsQueryable>
+		<AddEntityAsync>
+			<summary>
+				Generate id insert data into database.
+				It has parameter <paramref name="entity"/> type of bill  with   customer and payment  if exist to database
+				<list type="number">
+					<item>List of BillItems </item>
+					<item> the Id of Bill that added to database  by OperationHelper</item>
+				</list>
+			</summary>
+			<param name="entity"> Type of bill </param>
+			<returns>Bill object as asynchronous </returns>
+		</AddEntityAsync>
+		<UpdateEntityAsync>
+			<summary>
+				update data with parameter <paramref name="entity"/> type of bill  with  customer and add payment
+				if exist to database
+				and call CreateBuy or AddListEntities with  two argument
+				<list type="number">
+					<item>List of BillItems </item>
+					<item> the Id of Bill that added to database </item>
+				</list>
+			</summary>
+			<param name="entity"> Type of bill</param>
+			<returns>void method</returns>
+		</UpdateEntityAsync>
+		<DeleteEntityAsync>
+			<summary>
+				delete bill with all existing relationships from database and retreve data to store
+			</summary>
+			<param name="id">billId</param>
+			<returns> Boolean asynchronous</returns>
+		</DeleteEntityAsync>
+		<GetAll>
+			<summary>
+				Get List of bill with customer include  depend on parameter as <paramref name="filter"/> type of expression of delegate function  with two parameter category and return  bool
+			</summary>
+			<param name="filter"></param>
+			<returns> list of Bills with Customer in descending order by billId</returns>
+		</GetAll>
+		<AutoComplete>
+			<summary>
+				Get the data of category using <paramref name="filter"/> type of lambda expression type of category
+			</summary>
+			<param name="filter"> type of expression of delegate function with two parameter category and return bool</param>
+			<returns> List of Category  </returns>
+		</AutoComplete>
+		<GetByIdAsync>
+			<summary>
+				Get the one object of bill with customer and payments
+			</summary>
+			<param name="id"> type of billid</param>
+			<returns>Object of bill </returns>
+		</GetByIdAsync>
+		<SearchBills>
+			<summary>
+				Get list of Anonymous object which has
+				<list type="bullet">
+					<item>billId</item>
+					<item>date</item>
+					<item>name</item>
+				</list>
+			</summary>
+			<param name="filter"> lambda expression  with func delelgate with  bill and return bool </param>
+			<returns>list of Anonymous object </returns>
+		</SearchBills>
+		<GetStores>
+			<summary>
+				Get list of store using <paramref name="filter"/> type of lambda expression  type of category  and return bool
+			</summary>
+			<param name="filter"> lambda expression  with func delelgate with  store and return bool </param>
+			<returns>list of store object </returns>
+		</GetStores>
+		<ColorFilter>
+			<summary>
+				Get list of Anonymous object which has
+				<list type="bullet">
+					<item>colorid</item>
+					<item>colorname</item>
+					<item>name</item>
+				</list>
+			</summary>
+			<param name="filter"> lambda expression  with func delelgate with  item and return bool </param>
+			<param name="isbuy">Is bill buy or not</param>
+			<returns>list of Anonymous object </returns>
+		</ColorFilter>
+		<GetItemQuantityFromItem>
+			<summary>
+				Get Itemquatntity object with parameter <paramref name="filter"/> of exprestion which take func of item and return bool
+			</summary>
+			<param name="filter">type of lambda exprestion which take func of item and return bool</param>
+			<param name="isbuy"> if bill is buy or not</param>
+			<returns>object of itemQuantity</returns>
+		</GetItemQuantityFromItem>
+		<GetBillWithBillItemsWithItemAndColorAndMeasure>
+			<summary>
+				Get bill object with List of billItems with List Object of itemQuantity with object of item with two object of color and measure
+			</summary>
+			<param name="bill_filter"> type of lambda exprestion which take func of bill and return bool </param>
+			<param name="billItem_filter"> type of lambda exprestion which take func of billitem and return bool </param>
+			<returns> object of bill if exist or null if not </returns>
+		</GetBillWithBillItemsWithItemAndColorAndMeasure>
+		<DeleteAllBillContentWithoutRetreiveDataToStore>
+			<summary>
+				Delete bill without retrive data to billItem Quantity
+			</summary>
+			<param name="id"></param>
+			<returns>bool as async</returns>
+		</DeleteAllBillContentWithoutRetreiveDataToStore>
+	</members>
+</docs>

@@ -1,0 +1,70 @@
+﻿@model Item
+
+<form >
+    <h5 style="margin-top:5px;color:#ff6347">تفاصيل المنتج</h5>
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group form-row">
+
+            <input hidden id="itemid" value="@Model.ItemId" />
+            <input hidden id="categoryid" value="@Model.CategoryId" />
+            <label class="control-label col-md-1">
+            @Html.DisplayNameFor(x=>x.MeasureId);
+            </label>
+            <div class="col-md-3" style="display:inline-block; margin-bottom:2px">
+                <select id="measureid" class="form-control" asp-items="@(new SelectList(@ViewBag.measure,"MeasureId", "MeasureName",Model.MeasureId))">
+                </select>
+            </div>
+            <label class="control-label col-md-1">
+                @Html.DisplayNameFor(x=>x.ColorId);
+            </label>
+            <div class="scrollable col-md-3" style="display:inline-block; margin-bottom:2px">
+                @*<input type="text" id="measure" name="measure" placeholder="measure" class="form-control" disabled/>*@
+                <select id="colorid" class="form-control dropdown-toggle" asp-items="@(new SelectList(@ViewBag.Color,"ColorId", "ColorName",Model.ColorId))">
+                </select>
+            </div>
+            <label class="control-label col-md-2">
+               
+            </label>
+         @*   <div class="col-md-2" style="display:inline-block">
+                <a href="#" style="color:blue" onclick="details(@Model.ItemId)"> الكميه والسعر</a>
+            </div>*@
+
+           @* <label class="control-label col-md-2">
+                الكرتونه
+            </label>
+            <div class="col-md-2" style="display:inline-block">
+                <input type="number" id="cartona" value="@Model.Cartona" placeholder="الكميه" class="form-control" />
+            </div>*@
+        </div>
+    </div>
+    <div class="modal-footer">
+        @*<button type="reset" class="btn btn-danger" data-dismiss="modal">الغاء</button>*@
+        <button id="saveEdit" style="margin:5px"  class="btn btn-success" >حفظ</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    $("#saveEdit").click(function (e) {
+        e.preventDefault();
+        // update queckly and relod the page and open modal again 
+        var item = new Object();
+        item.MeasureId = $("#measureid").val();
+        item.ItemId = $("#itemid").val();
+        item.colorId = $("#colorid").val();
+        item.CategoryId = $("#categoryid").val();
+        $.ajax({
+            type: "POST",
+            url: "/Items/Edit",
+            data: {item},
+            success: function (name) {
+                $("#additems").modal("hide");
+                showmodal($("#categoryid").val(), name,'/Items/Items');
+            },
+        })
+    });
+   
+</script>

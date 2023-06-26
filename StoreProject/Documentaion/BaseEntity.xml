@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<docs>
+	<members name="baseentity">
+		<BaseEntity>
+			 <summary>
+				 Base Class Entity which all other class inherited from.	
+			</summary>
+			 <typeparam name="T"> Type of entity of inherited class</typeparam>
+		</BaseEntity>
+		<BillItemRepo>
+			 <summary>
+				 Get details of bills it defined in billRepo	
+			</summary>
+		</BillItemRepo>
+		<CustomerRepo>
+			<summary>
+				 Get customer data it defined in billrepo	
+			</summary>
+		</CustomerRepo>
+		<PaymentRepo>
+			<summary>
+				 Get the pay data  it defined in bill repo
+			</summary>
+		</PaymentRepo>
+		<CateroryRepo>
+			 <summary>
+				 Get the item data which represent the store it defined in bill repo	
+			</summary>
+		</CateroryRepo>
+		<ItemRepo>
+			 <summary>
+				 Get the details of category it represent a essential spart of store it define in categoury repo	
+			</summary>
+		</ItemRepo>
+		<StoreRepo>
+			 <summary>
+				 Get the stote data which category stored in	
+			</summary>
+		</StoreRepo>
+		<BaseEntityctor>
+			 <summary>
+				 Constractor which take object of operationalhelper to manipulate data	
+			</summary>
+			   <param name="operationHelper"> Database handeler</param>
+		</BaseEntityctor>
+		<GetAsQueryable>
+			 <summary>
+				 Get specific entity as queryable using filter <paramref name="filter"/> type of expression func which take Type of generic class and return bool.	
+			</summary>
+			 <param name="filter"> expression func which take Type of generic class and return bool</param>
+			 <returns>An entity as queryable</returns>
+		</GetAsQueryable>
+		<GetAll>
+			 <summary>
+				 Get specific entity as queryable using filter <paramref name="filter"/> type of expression func which take Type of generic class and return bool.	
+			</summary>
+			 <param name="filter"> expression func which take Type of generic class and return bool</param>
+			 <returns>An entity as queryable</returns>
+		</GetAll>
+		<GetByIdAsync>
+			 <summary>
+				 Get specific entity as queryable using filter <paramref name="id"/> type of int	
+			</summary>
+				 <param name="id">type of int </param>
+				 <returns>object entity </returns>
+		</GetByIdAsync>
+		<AddEntityAsync>
+			 <summary>
+				 Insert specific entity in database as a parameter	
+			</summary>
+			 <param name="entity">type of T class </param>
+			 <returns>object entity </returns>
+		</AddEntityAsync>
+		<AddListEntities>
+			 <summary>
+				 Insert list of specific entity  <paramref name="entities"/> depend on other entity in database which pass it's id <paramref name="entityId"/>>	
+			</summary>
+				<param name="entities"> which will insert </param>
+				<param name="entityId"> the foreign key id </param>
+				<returns>Void method </returns>
+		</AddListEntities>
+		<UpdateEntityAsync>
+			 <summary>
+				 Update the entity type of T class.	
+			</summary>
+				 <param name="entity">type of T class Which will update</param>
+				 <returns>Void method</returns>
+		</UpdateEntityAsync>
+		<DeleteEntityAsync>
+			 <summary>
+				 Delete entity using <paramref name="id"/> id of entity.	
+			</summary>
+			  <param name="id"></param>
+			  <returns> bool as asynchronous</returns>
+		</DeleteEntityAsync>
+		<CreateId>
+			 <summary>
+				Generate Id for generic entity.	
+			</summary>
+			   <typeparam name="O"> Type of class</typeparam>
+			   <param name="filter"> delegate Func which take generic type of class and return bool</param>
+			   <param name="id"> Increment type of int</param>
+			   <returns> New id number </returns>
+		</CreateId>
+		<CheckNull>
+			<summary>
+				 Check if the type of expresion delegate <paramref name="filter"/> is null or not
+			</summary>
+			   <typeparam name="O"> Type of class</typeparam>
+			   <param name="filter"> delegate Func which take generic type of class and return bool</param>
+			   <returns>Class type as queryable</returns>
+		</CheckNull>
+		<AutoComplete>
+			 <summary>
+				  Get a list of catrgory class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo 
+			</summary>
+			    <param name="filter">type of delegate category </param>
+			    <returns> List of category </returns>
+		</AutoComplete>
+		<GetStores>
+			 <summary>
+				   Get a list of store class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	  
+			</summary>
+			   <param name="filter">type of delegate category </param>
+			   <returns> List of store </returns>
+		</GetStores>
+		<SearchBills>
+			 <summary>
+				 Get a list of anonymous class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	
+			</summary>
+			   <param name="filter"> expression type of Func which take bill and return false</param>
+			   <returns> List of of anonymous object </returns>
+		</SearchBills>
+		<ColorFilter>
+			 <summary>
+				 Get a list of anonymous class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	
+			</summary>
+			     <param name="filter"> expression type of Func which take item and return false</param>
+			     <param name="isbuy"> if is buy or not </param>
+			     <returns> List of of anonymous object </returns>
+		</ColorFilter>
+		<MeasureFilter>
+			 <summary>
+				   Get a list of anonymous class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	  
+			</summary>
+			     <param name="filter"> expression type of Func which take item and return false</param>
+			     <param name="isbuy"> if is buy or not </param>
+			     <returns> List of of anonymous object </returns>
+		</MeasureFilter>
+		<GetItemQuantityFromItem>
+			 <summary>
+				 Get item with itemquantity object inside
+			</summary>
+			 <param name="filter"> expression type of Func which take item and return false</param>
+			 <param name="isbuy"> if isbuy or not</param>
+			 <returns> object of item</returns>
+		</GetItemQuantityFromItem>
+		<GetListOfItems>
+			 <summary>
+				 Get list lof item with itemqauntity and meadure and color	
+			</summary>
+			   <param name="filter"> expression type of Func which take item and return false</param>
+			   <param name="filter2"> expression type of Func which take itemquantity and return false</param>
+			   <returns> list of anonymous object </returns>
+		</GetListOfItems>
+		<PaidAsync>
+			  <summary>
+				    Get sum of  pay for all existying bills   
+			</summary>
+			   <param name="filter"> expression type of Func which take bill and return false</param>
+			   <returns> double as asynchronous</returns>
+		</PaidAsync>
+		<DebitAsync>
+			 <summary>
+				   Get sum of total buy which consider as dept for all existying bills	   
+			</summary>
+			 <param name="filter"> expression type of Func which take bill and return false</param>
+		       <returns> double as asynchronous</returns>
+		</DebitAsync>
+		<ProfitBill>
+			  <summary>
+				    Get a specific bill with list of bill items, objetc of  items, itemquantity, color and mesaure   
+			</summary>
+			      <param name="id"> the id of specific bill</param>
+			      <returns> object of bill </returns>
+		</ProfitBill>
+		<DoubleFormat>
+			 <summary>
+				  Convert any double to double format 0.00	  
+			</summary>
+			    <param name="value">douoble which want to convert </param>
+			    <returns> double in 0.00 format </returns>
+		</DoubleFormat>
+		<GetTotalNetAsync>
+			 <summary>
+				    Get the subtarct of pay and debit the result is minus then dept else not	   
+			</summary>
+			      <param name="filter"></param>
+			      <returns> double with minus if dept or not </returns>
+		</GetTotalNetAsync>
+		<GetItemquantityAndItemWithColorAndMesureToBillItem>
+			  <summary>
+				   Get list of  bill item with object of  items, itemquantity, color and mesaure	  
+			</summary>
+			      <param name="billitem_filter"> the idf of specific bill</param>
+			      <returns> list of bill item</returns>
+		</GetItemquantityAndItemWithColorAndMesureToBillItem>
+		<GetItemWithMeasureAndColor>
+			 <summary>
+				   Get list of item with object of measure and color	  
+			</summary>
+			     <param name="filter"></param>
+			     <returns>list of item </returns>
+		</GetItemWithMeasureAndColor>
+		<GetItemQuantity>
+			  <summary>
+				    Get list of Item quantity only   
+			</summary>
+			     <param name="filter"></param>
+			     <returns>list pf item quantity</returns>
+		</GetItemQuantity>
+		<GetBillWithBillItemsWithItemAndColorAndMeasure>
+			 <summary>
+				   Get list of  bill, bill item with object of  items, itemquantity, color and mesaure	  
+			</summary>
+			    <param name="bill_filter">expression type of Func which take bill and return false </param>
+			    <param name="billItem_filter"> expression type of Func which take bill item and return false</param>
+			    <returns> Object of bill </returns>
+		</GetBillWithBillItemsWithItemAndColorAndMeasure>
+		<DeleteAllBillContentWithoutRetreiveDataToStore>
+			 <summary>
+				 Delete bill without retrive data to billItem Quantity	
+			</summary>
+			    <param name="id"></param>
+			    <returns>bool as asynchronous </returns>
+		</DeleteAllBillContentWithoutRetreiveDataToStore>
+		<GetBillsIdFromItemQuantity>
+			 <summary>
+				   Get list of bill id	  
+			</summary>
+			   <param name="filter">expression type of Func which take bill and return false </param>
+			   <returns> list of bill id</returns>
+		</GetBillsIdFromItemQuantity>
+		<DateTimeNow>
+			 <summary>
+				   Get date time with format (yyyy-MM-dd hh:mm)	  
+			</summary>
+			     <returns>date time in format(yyyy-MM-dd hh:mm) </returns>
+		</DateTimeNow>
+	</members>
+</docs>

@@ -1,0 +1,252 @@
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Create";
+}
+<style>
+    body{
+        font-size:20px;
+        font-weight:bold;
+    }
+</style>
+<form id="CreateForm">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                  اسم المنتج
+                </label>
+                <div class="col-md-8" style="display:inline-block">
+                <input type="text" id="itemName" placeholder="الاسم" class="form-control" oninput="getMeasuresForchoiceeItem()" />
+                </div>
+            </div>
+        </div>
+        <h5 style="margin-top:5px;color:#ff6347">تفاصيل المنتج</h5>
+        <hr />
+        <div class="form-horizontal">
+            <div class="form-group form-row">
+                <label class="control-label col-md-1">
+                    الوحده
+                </label>
+                <div class="col-md-3" style="display:inline-block; margin-bottom:2px">
+                <select id="measureId" class="form-control">
+                </select>
+               @* <select id="measureId" name="measure" class="form-control" asp-items="@(new SelectList(@ViewBag.measure,"MeasureId", "MeasureName"))">
+                    </select>*@
+                </div>
+                <label class="control-label col-md-1">
+                    المخزن
+                </label>
+                <div class="col-md-3" style="display:inline-block; margin-bottom:2px">
+                    <select id="storeId" asp-for="StoreId" class="form-control" asp-items="@(new SelectList(@ViewBag.stores,"StoreId", "StoreName"))">
+                    </select>
+                </div>
+                <label class="control-label col-md-1">
+                    اللون
+                </label>
+                <div class="scrollable col-md-3" style="display:inline-block; margin-bottom:2px">
+                <select id="colorId" class="form-control" > </select>
+                    @*<input type="text" id="measure" name="measure" placeholder="measure" class="form-control" disabled/>*@
+                 @*   <select id="colorId" class="form-control dropdown-toggle" asp-items="@(new SelectList(@ViewBag.color,"ColorId", "ColorName"))" onchange="addprice()">
+                    </select>*@
+                </div>
+                <label class="control-label col-md-1">
+                    سعرالشراء
+                </label>
+                <div class="col-md-2" style="display:inline-block; margin-bottom:2px">
+                    <input type="number" id="buyprice" name="buyprice" placeholder="سعر الشراء" class="form-control" />
+                </div>
+                <label class="control-label col-md-1">
+                    سعرالبيع
+                </label>
+                <div class="col-md-2" style="display:inline-block; margin-bottom:2px">
+                    <input type="number" id="saleprice" name="saleprice" placeholder="سعر البيع" class="form-control" />
+                </div>
+                <label class="control-label col-md-1">
+                    الكميه
+                </label>
+                <div class="col-md-2" style="display:inline-block">
+                    <input type="number" id="quantity" name="quantity" placeholder="الكميه" class="form-control" />
+                </div>
+                <label class="control-label col-md-1">
+                    الكرتونه
+                </label>
+                <div class="col-md-2" style="display:inline-block">
+                    <input type="number" id="cartona" name="quantity" placeholder="الكرتونه" class="form-control" />
+                </div>
+                <div class="col-md-2" style="margin-top:10px">
+                    <a href="#"id="addToList" class="btn btn-primary">اضافه</a>
+                </div>
+            </div>
+            <table id="detailsTable" class="table">
+                <thead>
+                    <tr>
+                        <th style="width:10%">الوحده</th>
+                        <th style="width:10%">اللون</th>
+                        <th style="width:10%"> الكميه</th>
+                        <th style="width:10%">سعر البيع </th>
+                        <th style="width:10%">سعر الشراء </th>
+                        <th style="width:10%">الكرتونه </th>
+                        <th style="width:10%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    <div class="modal-footer">
+        @*<button type="reset" class="btn btn-danger" data-dismiss="modal">الغاء</button>*@
+        <button id="saveOrder" style="margin:5px;width:100px;" type ="submit" class="btn btn-success">حفظ</button>
+    </div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+  
+    //var measureid;
+    //var colorid = 0;
+    $("#addToList").click(function (e) {
+        e.preventDefault();
+       // measureid = $("#measureId").val();
+        if ($.trim($("#itemName").val()) == "" || $.trim($("#buyprice").val())=="" || $.trim($("#saleprice").val())=="" || $.trim($("#quantity").val())=="")
+        { alert("تاكد من ادخال القيم "); return; }
+        //putting data into the table ----------------------------------
+          
+       // measureid = $("#measureId").val();
+        var quantity = $("#quantity").val(),
+            saleprice = $("#saleprice").val(),
+            buyprice = $("#buyprice").val(),
+            cartona = $("#cartona").val(),
+            detailsTableBody = $("#detailsTable tbody");
+        if (cartona == "")
+            cartona = 0;
+        var productItem = '<tr id=' + $("#measureId").val() + '>'
+            + '<td>' + $("#measureId option:selected").text() + '</td>'
+            + '<td>' + $("#colorId option:selected").text() + '</td> '
+            + '<td>' + quantity + '</td>'
+            + '<td>' + saleprice + '</td>'
+            + '<td>' + buyprice + '</td>'
+            + '<td>' + cartona + '</td>'
+            + '<td style = "display: none" > ' + $("#measureId").val() + '</td>'
+            + '<td><a data-itemId="0" href="#" class="deleteItem" style="color:red"> حذف </a></td>'
+            + '<td style="display:none">' + $("#colorId").val() + '</td>'
+            + '</tr> ';
+        //    var check=0;
+        //$.each($("#detailsTable tbody tr"), function () {
+        //    if (measureid == $(this).find('td:eq(6)').html() && $(this).find('td:eq(8)').html()==colorid)
+        //    {
+        //        check++
+        //        if(check>1)
+        //        $(this).find('td:eq(2)').val()=quantity;
+        //        else
+                 
+        //    }else
+
+        //}
+               detailsTableBody.append(productItem);
+        clearItem();
+    });
+    //------clearing data--------------
+    function clearItem() {
+        $("measurId").val("");
+        $("colorId").val("");
+        $("#price").val('');
+        $("#quantity").val('');
+        $("#saleprice").val('');
+        $("#buyprice").val('');
+        //$("#cartona").val('');
+    }
+   //-------for delete the data from table--------------
+    $(document).on('click', 'a.deleteItem', function (e) {
+        e.preventDefault();
+       // var $self = $(this);
+        if ($(this).attr('data-itemId') == "0") {
+            $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                $(this).remove();
+            });
+        }
+    });
+    $("#saveOrder").click(function (e) {
+        e.preventDefault();
+        if ($.trim($("#itemName").val()) == "") { alert("ادخل الاسم من فضلك "); return; }
+        var items = [];
+        $.each($("#detailsTable tbody tr"), function () {
+            var Item = new Object();
+            var itemQuantities = [];
+            var ItemQuantity = new Object();
+            if ($(this).find('td:eq(6)').html() == null || $(this).find('td:eq(2)').html() == null || $(this).find('td:eq(3)').html() == null) {
+                alert("لاتوجد بيانات ");
+                return;
+            }
+                ItemQuantity.Quantity = $(this).find('td:eq(2)').html(),
+                ItemQuantity.SalePrice = $(this).find('td:eq(3)').html(),
+                ItemQuantity.BuyPrice = $(this).find('td:eq(4)').html(),
+                Item.MeasureId = $(this).find('td:eq(6)').html(),
+                Item.ColorId =   $(this).find('td:eq(8)').html();
+                Item.cartona = $(this).find('td:eq(5)').html();
+                itemQuantities.push(ItemQuantity);
+                Item.ItemQuantities = itemQuantities
+                items.push(Item);
+               
+        });
+        var Category = new Object();
+       Category.CategoryName = $("#itemName").val();
+       Category.storeId = $("#storeId").val();
+       Category.Items = items;
+        $.when(saveOrder(Category)).then(function (response) {
+            
+        }).fail(function (err) {
+            console.log(err);
+        });
+    });
+    function saveOrder(Category) {
+        return $.ajax({
+            type: 'POST',
+            url: "/Items/Create",
+            data: Category,
+            success: function (result) {
+                alert("تم بنجاح ");
+                location.reload();
+            },
+            error: function () {
+                alert("Error!")
+            }
+        });
+    }
+
+
+    function getMeasuresForchoiceeItem() {
+        //  $("#echeck").prop('checked', false);
+        $("#measureId").empty();
+        var items = '';
+        $.ajax({
+            url: "/Items/GetMesure",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, statlist) {
+                    if (statlist != null) {
+                        items += '<option value=' + statlist.measureId + '>' + statlist.measureName + '</option>'
+                        $("#measureId").html(items);
+                    }
+                });
+                getColorForchoiceeItem();
+            }
+        });
+    }
+    function getColorForchoiceeItem() {
+        $("#colorId").empty();
+        var items = '';
+        $.ajax({
+            url: "/Items/GetColor",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, statlist) {
+                    if (statlist != null) {
+                        items += '<option value=' + statlist.colorId + '>' + statlist.colorName + '</option>'
+                        $("#colorId").html(items);
+                    }
+                });
+            }
+        });
+    }
+</script>

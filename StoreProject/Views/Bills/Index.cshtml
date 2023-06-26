@@ -1,0 +1,239 @@
+﻿@model PaginatedList<Bill>
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+    <style>
+
+        #mymodal, #newOrderModal {
+        overflow-y: scroll
+        }
+
+        a {
+        color: Highlight
+        }
+
+        body {
+        text-align: center;
+        font-weight: bold;
+        font-size: 17px;
+        }
+    </style>
+    <br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-search alert" style="box-sizing:border-box"></i>
+                    <input class="form-control" id="search" placeholder=" رقم المعامله او الاسم "oninput="searchbill()" />
+                </div>
+            </div>
+            <div class="col-lg-5 col-sm-3">
+                @if (ViewBag.isbuy)
+                {
+                    <strong style="font-size:x-large;font-weight:bold;color:red">شراء  معاملات</strong>
+                }
+
+                else
+                {
+                    <strong style="font-size:x-large;font-weight:bold;color:red">بيع  معاملات</strong>
+                }
+            </div>
+
+            <div class="col-lg-4 col-sm-3">
+                <button class=" btn btn-primary fa fa-plus" style="height:40px;width:200px;font-size:large" onclick="create_get('/Bills/Newbill')"> معامله جديده</button>
+            </div>
+        </div>
+        @if (Model.Any())
+        {
+            <div class="row">
+                <table class="table table-striped border-success" style="width:100%;text-align:center;margin-bottom:20px">
+                    <thead>
+                        <tr style="background-color:rebeccapurple;color:white">
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].BillId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].Customer.Name)
+                            </th>
+                            @*   <th>
+                            الدين
+                        </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model[0].CreationDateTime)
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="datasearch">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            <tr style="font-weight:bold;font-size:17px;">
+                                <td>
+                                    @Html.ActionLink(Model[i].BillId.ToString(), "Purchase", new { billId = Model[i].BillId })
+                                </td>
+                                <td>
+                                    @Html.ActionLink(Model[i].Customer.Name.ToString(), "Purchase", new { billId = Model[i].BillId})
+                                </td>
+                                @* <td>
+                                @ViewBag.dept[i]
+                            </td>*@
+                                <td>
+                                    @Model[i].CreationDateTime.ToString("dd/MM/yyyy hh:mm tt")
+                                </td>
+                                <td><a href="#" onclick="edit_get(@Model[i].BillId,'/Bills/Edit')" class="btn btn-success fa fa-edit"> تعديل</a></td>
+                                <td>
+                                    <a href="#" onclick="edit_get(@Model[i].BillId,'/Bills/CreateDiscard')" class="btn btn-dark fa fa-plus"> مرتجع</a>
+                                </td>
+                                <td>
+                                    <a href="#" onclick="editget(@Model[i].BillId,'/Bills/Delete')" class="btn btn-danger fa fa-trash"> حذف</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-lg-12" style="text-align:center; font-size:xx-large;font-weight:bold;color:red"> لاتوجد بيانات</div>
+            </div>
+        }
+    </div>
+    @*<div class="modal fade" id="newOrderModal" style="color:black">
+        <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>فاتوره جديده</h4>
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                </div>
+
+            </div>
+        </div>
+    </div>*@
+@if (Model.Any())
+{
+    
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+   
+    <div style="position:absolute;bottom:60px;">
+        <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-isbuy="@Model[0].IsBuy"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+    class="btn btn-success @prevDisabled">
+
+            <span class="fa fa-backward"></span>
+        </a>
+        <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-isbuy="@Model[0].IsBuy"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+    class="btn btn-success @nextDisabled">
+            <span class="fa fa-forward"></span>
+        </a>
+    </div>
+}
+@section scripts{
+    <script>
+
+        var isbuy=false;
+        if ("@ViewBag.isbuy".includes("True"))
+       {
+            isbuy=true;
+       }
+        
+        //function ischecked() {
+        //    alert(isbuy);
+        //    isbuy = $("#checkIfBuy").is(":checked");
+        //    alert(isbuy);
+        //    if (isbuy) {
+        //        $.ajax({
+        //            type: "POST",
+        //            data: {buybill: isbuy },
+        //            url: "/Bills/Index",
+        //            success: function () {
+        //            },
+        //            error: function () {
+        //            }
+        //        });
+        //    }
+        //}
+        function editget(id, url) {
+            $("#content").empty();
+            var url = url + "?id=" + id;
+            $("#content").load(url, function () {
+                $("#mymodal").modal("show");
+            })
+        }
+        document.getElementById("search").focus();
+        //Show Modal.
+        function addNewOrder() {
+            // for empty data--------------------------------------------------------------
+
+            $("#mymodal").modal();
+            $("#productName").val('');
+            $("#price").val('');
+            $("#quantity").val('');
+            // $("#measureId").val('');
+            $("#measureName").val('');
+        }
+        var itemquantity;
+        var measureid = 0;
+        var totalbill = 0.0;
+        var colorid = 0;
+        var itemid = 0;
+        var itemquantityid=0;
+        var forcartona = 1;
+        var x = 0;
+        //Add Multiple Order.
+        function searchbill() {
+            var searchvalue = $("#search").val();
+            if (searchvalue == 0) {
+                location.reload();
+            }
+            if (searchvalue == '') return;
+            var setdata = $("#datasearch");
+            setdata.html("");
+        $.ajax({
+                url: "/Bills/SearchBill",
+                dataType: "json",
+                data: { search: searchvalue, isbuy: isbuy },
+                success: function (data) {
+                    if (data.length == 0) {
+                        setdata.append('<tr style="color:red;text-align:center"><td colspan="11"> لا توجد بيانات</td></tr>');
+                        return;
+                    } else {
+                        $.each(data, function (index, value) {
+                            var dept=0.0;
+                            if (value.dept < 0) {dept= Math.abs(value.dept);}
+                            var datarow = "<tr style='font-weight: bold; font-size:17px;'>" +
+                                " <td><a href =" + "/Bills/Purchase?" + "billId=" + value.billId + ">" + value.billId + "</a></td>" +
+                                "<td>" + value.name + "</td>" +
+                                "<td>" + value.date + "</td>" +
+                                '<td><a href="#" class="btn btn-dark fa fa-edit" onclick="edit_get(\'' + value.billId + '\',\'' + '/Bills/Edit' + '\')"> تعديل</a></td>'
+                                + '<td><a href="#" class="btn btn-primary fa fa-edit" onclick="edit_get(\'' + value.billId + '\',\'' + '/Bills/CreateDiscard' + '\')"> مرتجع</a></td>'
+                                + '<td><a href="#" class="btn btn-danger fa fa-trash" onclick="editget(\'' + value.billId + '\',\'' + '/Bills/Delete' + '\')"> حذف</a></td>'
+                                + "</tr>";
+                            setdata.append(datarow)
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        }
+        function close() {
+            $("#mymodal2").modal("hide");
+        }
+    </script>
+}
+<script src="~/js/Java_methods.js"></script>
+

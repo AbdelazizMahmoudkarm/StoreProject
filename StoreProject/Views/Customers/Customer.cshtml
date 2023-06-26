@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Bill>
+@{
+    if (!Model.Any())
+   {
+    <p style="text-align:center;font-size:large;font-weight:bold; color:red"> لا توجد عناصر للعرض</p>
+    }
+    else
+    {
+    <table  class="table table-striped table-bordered"style="text-align:center">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Customer.Name)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.First().Customer.PhoneNumber)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.First().Payments.First().Pay)
+                </th>
+                   <th>
+                   (+) مدين (-)او غير مدين 
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach(var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.PhoneNumber)
+                </td>
+                <td>
+                   @Html.DisplayFor(model=>item.Pay)
+                </td>
+                        @{
+                            if (item.Dept > 0)
+                            {
+                                <td>+ @item.Dept </td>
+                            }
+                            else
+                            {
+                                <td>- @Math.Abs(item.Dept)</td>
+                            }
+                        }
+            </tr>
+}
+        </tbody>
+    </table>
+}
+}

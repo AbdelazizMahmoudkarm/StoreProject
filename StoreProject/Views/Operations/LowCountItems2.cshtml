@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ItemQuantity>
+@{
+    Layout = null;
+}
+    <head>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" media="screen" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <style>
+            body 
+            {
+                direction: rtl;
+            }
+            .just {
+                display: flex;
+                align-items: center;
+            }
+
+            span {
+                padding: 2px;
+            }
+            .p {
+                border: 1px solid black;
+                font-size:x-large;
+                border-radius: 15px;
+                text-align: center
+            }
+            table {
+                border-collapse: collapse;
+                margin:0 auto;
+            }
+            th, td {
+                border: 1px solid black;
+                text-align: center;
+            }
+            @@page {
+                size: A3 portrait;
+                margin-top:5mm;
+                margin-bottom: 136mm;
+                margin-right: 46mm;
+                margin-left: 48mm
+            }
+        </style>
+    </head>
+@{
+    if (Model.Count() == 0)
+    {
+        <p style="text-align:center;font-size:larger;font-weight:bold; color:red"> لا توجد عناصر للعرض</p>
+    }
+    else
+    {
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-9">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th colspan="4">
+                        <div class="p">
+                            <span style="font-size:x-large;">مركز تلوين الفتح</span>
+                            <div class="just">
+                                <span >
+                                    <span> مركز تلوين ووكيل معتمد لشركة برستول</span>
+                                    <br />
+                                    <span> اويش الحجر-مركز المنصوره</span>
+                                </span>
+                                <img src="~/Img/(1).jpeg" width="140" height="70" />
+                                <span>
+                                    <span>  اداره أ/محمد عبدالجواد</span>
+                                    <br />
+                                    <span>بجوار معهد الاعدادي الثانوي بنين </span>
+                                </span>
+                            </div>
+                            <span> رقم : 01009068852---01155531298</span>
+                        </div>
+                    </th>
+                </tr>
+                <tr style="background-color:grey">
+                            <th>
+                                @Html.DisplayNameFor(model => model.Item.Category.CategoryName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Item.Measure.MeasureName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Item.Color.ColorName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Quantity)
+                            </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                         <td>
+                             @Html.DisplayFor(modelItem => item.Item.Category.CategoryName)
+                         </td>
+                         <td>
+                             @Html.DisplayFor(modelItem => item.Item.Measure.MeasureName)
+                         </td>
+                         @if (item.Item.Color.ColorName == "عادي")
+                         {
+                             <td>
+                                 -------
+                             </td>
+                         }
+                         else
+                         {
+                             <td>
+                                 @Html.DisplayFor(modelItem => item.Item.Color.ColorName)
+                             </td>
+                         }
+                         <td style="font-size:large; font-weight:bold;color:red">
+                             @item.Quantity.ToString("0.00")
+                         </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+    }
+}
+<script>
+    print();
+</script>
+
+

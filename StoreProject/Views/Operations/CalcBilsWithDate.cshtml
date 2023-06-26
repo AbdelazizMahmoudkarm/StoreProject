@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Bill>
+@if(Model.Any())
+{
+
+    double toatlcount = 0;
+    double paid = 0;
+    double dept = 0;
+    double totalearn = 0;
+
+<table class="table table-striped table-bordered" style="font-size:large; text-align:center">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BillId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pay)
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDateTime)
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BillId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.Name)
+            </td>
+                @{
+                    paid = item.Payments.Sum(x => x.Pay);
+                    toatlcount += paid;
+                    dept += item.BillItems.Sum(x => x.ItemQantity.SalePrice) - item.Discount;
+                    totalearn += item.BillItems.Sum(x => x.ItemQantity.SalePrice - x.BuyPrice) - item.Discount;
+                }
+            <td>
+                    @paid.ToString("0.00")
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<table style="text-align:center" class="table table-bordered table-hover">
+    <tr>
+        <td colspan="4" style="color:darkgreen;font-size:xx-large; font-weight:bold"> @dept.ToString("0.00") :اجمالي سعر الفواتير </td>
+        <td colspan="3" style="color:darkgreen;font-size:xx-large; font-weight:bold"> @paid.ToString("0.00") :اجمالي المدفوع </td>
+        <td colspan="1" style="color:darkgreen;font-size:xx-large; font-weight:bold"> @totalearn.ToString("0.00") :اجمالي الربح </td>
+</table>
+
+}else{
+    <p>لا توجد بيانات للعرض</p>
+}

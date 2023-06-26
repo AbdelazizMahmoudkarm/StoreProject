@@ -1,0 +1,115 @@
+﻿<div class="form-horizontal">
+    <div class="form-group form-row">
+     @*   <input hidden id="categoryId" />*@
+        <label class="control-label col-md-1">
+            الوحده
+        </label>
+        <div class="col-md-2" style="display:inline-block; margin-bottom:2px">
+            <select id="measureId" class="form-control">
+            </select>
+         @*   <select id="ameasureId" class="form-control" asp-items="@(new SelectList(@ViewBag.measure,"MeasureId", "MeasureName"))">
+            </select>*@
+        </div>
+        <label class="control-label col-md-1">
+            اللون
+        </label>
+        <div class="scrollable col-md-2" style="display:inline-block; margin-bottom:2px">
+            <select id="colorId" class="form-control">
+            </select>
+            @*<input type="text" id="measure" name="measure" placeholder="measure" class="form-control" disabled />*@
+          @*  <select id="colorId" class="form-control dropdown-toggle" asp-items="@(new SelectList(@ViewBag.color,"ColorId", "ColorName","<------>"))" onchange="addprice()">
+            </select>*@
+        </div>
+        <label class="control-label col-md-1">
+            سعرالشراء
+        </label>
+        <div class="col-md-2" style="display:inline-block; margin-bottom:2px">
+            <input type="number" id="abuyprice" placeholder="سعر الشراء" class="form-control" />
+        </div>
+        <label class="control-label col-md-1">
+            سعرالبيع
+        </label>
+        <div class="col-md-2" style="display:inline-block; margin-bottom:2px">
+            <input type="number" id="asaleprice" placeholder="سعر البيع" class="form-control" />
+        </div>
+        <label class="control-label col-md-1">
+            الكميه
+        </label>
+        <div class="col-md-2" style="display:inline-block">
+            <input type="number" id="aquantity" placeholder="الكميه" class="form-control" />
+        </div>
+        <label class="control-label col-md-1">
+            الكرتونه
+        </label>
+        <div class="col-md-2" style="display:inline-block">
+            <input type="number" id="cartona" placeholder="الكرتونه" class="form-control" />
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    @*<button type="reset" style="margin:5px;width:70px" class="btn btn-danger" data-dismiss="modal"  onclick=" showmodal()">الغاء</button>*@
+    <button onclick="saveadd()" style="margin:5px;width:70px" type="submit" class="btn btn-success">حفظ</button>
+</div>
+<script>
+        $("#measureId").empty();
+        var items = '';
+        $.ajax({
+            url: "/Items/GetMesure",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, statlist) {
+                    if (statlist != null) {
+                        items += '<option value=' + statlist.measureId + '>' + statlist.measureName + '</option>'
+                        $("#measureId").html(items);
+                    }
+                });
+                getColorForchoiceeItem();
+            }
+        });
+    function getColorForchoiceeItem() {
+        $("#colorId").empty();
+        var items = '';
+        $.ajax({
+            url: "/Items/GetColor",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, statlist) {
+                    if (statlist != null) {
+                        items += '<option value=' + statlist.colorId + '>' + statlist.colorName + '</option>'
+                        $("#colorId").html(items);
+                    }
+                });
+            }
+        });
+    }
+    function saveadd() {
+        var Item = new Object();
+        var itemQuantities = [];
+        var ItemQuantity = new Object();
+        Item.CategoryId = categoryId;
+        Item.MeasureId = $("#measureId").val();
+        Item.ColorId = $("#colorId").val();
+        Item.cartona = $("#cartona").val();
+
+       ItemQuantity.Quantity = $("#aquantity").val();
+       ItemQuantity.SalePrice = $("#asaleprice").val();
+       ItemQuantity.BuyPrice = $("#abuyprice").val();
+        itemQuantities.push(ItemQuantity);
+        Item.ItemQuantities = itemQuantities;
+       
+        $.ajax({
+            type: "POST",
+            url: "/Items/Addelement",
+            data: { Item},
+            success: function (name) {
+                 $("#additems").modal("hide");
+                showmodal(categoryId, name,'/Items/Items');
+                // $("#Showdetails").modal("show");
+            },
+            error: function () {
+                alert("حدث خطا من فضلك تاكد من وجود الوحده مسبقا!!!");
+            }
+
+        });
+    }
+</script>

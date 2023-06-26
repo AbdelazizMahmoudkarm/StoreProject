@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body {
+        text-align: center;
+        margin-bottom:2px
+    }
+</style>
+    <body>
+        <br/>
+        <div class="container">
+            <div class="row" style="text-align:center">
+                <div class=" col-lg-6 ">
+                <a href="#" class="btn btn-success" style="width:200px" onclick="create_get('/Customers/Customer')">العملاء</a>
+                </div>
+                <div class="col-lg-6">
+                <a href="#" class="btn btn-danger" style="width:200px" onclick="create_get('/Customers/Customer?isbuy=True')">الموردين</a>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-6">
+                    <img src="~/Img/12642578_10153935592212220_3336874559534716106_n.jpg" width="550" height="400" />
+                </div>
+                <div class="col-lg-6 ">
+                    <img src="~/Img/4003_promo.jpg" height="400" width="550" />
+                </div>
+            </div>
+        </div>
+    </body>

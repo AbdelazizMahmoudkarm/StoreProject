@@ -1,0 +1,64 @@
+﻿@model ItemQuantity
+
+<form>
+    <h5 style="margin-top:5px;color:#ff6347">تفاصيل المنتج</h5>
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group form-row">
+
+            <input hidden id="itemid" value="@Model.ItemId" />
+            <input hidden id="itemQuantityid" value="@Model.ItemQuantityId" />
+            <input hidden id="categoryId"/>
+          
+           <label class="control-label col-md-2">
+               @Html.DisplayNameFor(x=>x.Quantity);
+            </label>
+            <div class="col-md-2" style="display:inline-block">
+                <input type="number" id="quantity" value="@Model.Quantity" placeholder="الكميه" class="form-control" />
+            </div>
+             <label class="control-label col-md-2">
+                @Html.DisplayNameFor(x=>x.SalePrice);
+            </label>
+            <div class="col-md-2" style="display:inline-block">
+                <input type="number" id="saleprice" value="@Model.SalePrice" placeholder="الكميه" class="form-control" />
+            </div>
+            <label class="control-label col-md-2">
+                @Html.DisplayNameFor(x=>x.BuyPrice);
+            </label>
+            <div class="col-md-2" style="display:inline-block">
+                <input type="number" id="buyprice" value="@Model.BuyPrice" placeholder="الكميه" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        @*<button type="reset" class="btn btn-danger" data-dismiss="modal">الغاء</button>*@
+        <button id="editItemQuantity" style="margin:5px"  class="btn btn-success" >حفظ</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    $("#editItemQuantity").click(function (e) {
+        e.preventDefault();
+        
+        // update queckly and relod the page and open modal again 
+        var itemquantity = new Object();
+        itemquantity.ItemQuantityId = $("#itemQuantityid").val();
+       itemquantity.Quantity = $("#quantity").val();
+       itemquantity.salePrice = $("#saleprice").val();
+       itemquantity.BuyPrice = $("#buyprice").val();
+       itemquantity.ItemId = $("#itemid").val();
+        $.ajax({
+            type: "POST",
+            url: "/Items/EditItemQuantity",
+            data: { itemquantity},
+            success: function (name) {
+                $("#additems").modal("hide");
+                showmodal(categoryId, name, '/Items/Items');
+            },
+        })
+    });
+   
+</script>

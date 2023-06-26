@@ -1,0 +1,220 @@
+﻿<form id="NewOrderForm">
+    <div class="modal-body">
+        <h5 style="color:#ff6347"> <span style=" float : right; color:black">انشاء البيانات </span></h5>
+        <hr />
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                   اسم المحل
+                </label>
+                <div class="col-md-3" style="display:inline-block">
+                    <input type="text" id="brandname" name="name" placeholder="الاسم" class="form-control" />
+                </div>
+                <label class="control-label col-md-2">
+                    العنوان بالتفصيل 
+                </label>
+                <div class="col-md-4" style="display:inline-block">
+                    <input type="text" id="title" name="title" placeholder="العوان" class="form-control" />
+                </div>
+                <label class="control-label col-md-2">
+                    اسم صاحب المحل
+                </label>
+                <div class="col-md-3" style="display:inline-block">
+                    <input type="text" id="owner" name="discount" placeholder="اسم صاحب المحل" class="form-control" oninput="disc()" />
+                </div>
+                
+                <label class="control-label col-md-2">
+                    باقي العنوان
+                </label>
+                <div class="col-md-4" style="display:inline-block">
+                    <input type="text" id="place" name="place" placeholder="باقي العنوان" class="form-control" />
+                </div>
+                <label class="control-label col-md-2">
+                    التوكيل
+                </label>
+                <div class="col-md-3" style="display:inline-block">
+                    <input type="text" id="company" name="company" placeholder="التوكيل" class="form-control" />
+                </div>
+                <label class="control-label col-md-2">
+                    الرقم الاول 
+                </label>
+                <div class="col-md-3" style="display:inline-block">
+                    <input type="number" id="phonenumber" name="phonenumber"  placeholder="الرقم الاول " class="form-control"  />
+                </div>
+                <label class="control-label col-md-2">
+                   الرقم الثاني
+                </label>
+                <div class="col-md-3" style="display:inline-block">
+                    <input type="number" id="phonenumber2" name="phonenumber2" placeholder=" الرقم الثاني " class="form-control" />
+                </div>
+            </div>
+        </div>
+        <h5 style="color:#ff6347"> الصور</h5>
+        <hr />
+        <div class="form-horizontal">
+            <div class="row" style="margin:5px">
+                <label class="control-label col-md-2">
+                    اسم الصوره
+                </label>
+                <div class="col-md-2" >
+                    <input type="text" id="imagename" name="productName" placeholder="اسم الصوره" class="form-control"/>
+                </div>
+                <label class="control-label col-md-1">
+                    الصورة
+                </label>
+                <div class="col-md-4">
+                    <input type="file" accept="image/jpeg, image/png, image/jpg" onchange="imgurl(event)" multiple id="image" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <a id="addToList" class="btn btn-primary">اضافه</a>
+                </div>
+                <div class="above">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+        <table id="detailsTable" class="table table-striped">
+            <thead>
+                <tr style="background-color:#6471b1;color:black">
+                    <th>م</th>
+                    <th>اسم الصوره</th>
+                    <th>الصوره</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="reset" class="btn btn-primary" data-dismiss="modal">الغاء</button>
+        <button id="saveOrder" type="submit" class="btn btn-success">حفظ </button>
+    </div>
+</form>
+<script>
+    var x=0;
+    $("#addToList").click(function (e) {
+        checknum();
+        e.preventDefault();
+        if ($.trim($("#imagename").val()) == "" || $.trim($("#image").val()) == "") { alert("تاكد من ادخال القيم "); return; }
+      
+        //putting data into the table ----------------------------------
+        var imagename = $("#imagename").val(),
+            image = $("#image").val(),
+            detailsTableBody = $("#detailsTable tbody"),
+            brandimage = "<tr><td>" + ++x + "</td><td>" + imagename + "</td><td id=\"_"+x+"\"</td><td style='display:none'>"
+            +imageurl64+"</td><td><a data-itemId='0' href='#' class='deleteItem' style='color:red'> حذف </a> </td</tr>";
+        detailsTableBody.append(brandimage);
+        clearItem();
+        showimage();
+    });
+
+    function checknum(){
+        if ($.trim($("#phonenumber").val()).length < 11 || $.trim($("#phonenumber").val()).length>11){
+            alert("الرقم الاول اكبر او اقل من الحد المسموح");
+            return;
+        } else if ($.trim($("#phonenumber2").val()).length < 11 || $.trim($("#phonenumber2").val()).length > 11){
+            alert("الرقم الثاني اكبر او اقل من الحد المسموح");
+            return;
+        }
+    }
+    var imageurl64;
+    function imgurl(event) {
+        for (var i = 0; i < event.target.files.length; i++) {
+            var url = URL.createObjectURL(event.target.files[i]),
+                img = document.createElement("img");
+            img.src = url;
+            img.height = 40;
+            img.width = 50;
+            var canvas = document.createElement("canvas");
+            var img = new Image();
+            img.src = url;
+            img.onload = function () {
+                if (img.width < 1200 && img.height < 1000) {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                } else {
+                    canvas.height = 800;
+                    canvas.width = 1100;
+                }
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 1, 1);
+                var myImage = canvas.toDataURL("image/jpg");
+                imageurl64=myImage;
+            }
+        }
+    }
+    function showimage(){
+        if(imageurl64!=""){
+            var th = document.createElement("span");
+            var img = document.createElement("img");
+            img.src = imageurl64;
+            img.height = 40;
+            img.width = 50;
+            th.append(img);
+            $("#_"+x).append(th);
+        }
+    }
+    //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+    function clearItem() {
+      $("#image").val('');
+        $("#imagename").val('');
+    }
+    // After Add A New Order In The List, If You Want, You Can Remove It.
+    $(document).on('click', 'a.deleteItem', function (e) {
+        e.preventDefault();
+        if ($(this).attr('data-itemId') == "0") {
+            $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                $(this).remove();
+            });
+        }
+    });
+    //After Click Save Button Pass All Data View To Controller For Save Database
+    //Collect Multiple Order List For Pass To Controller
+    // the form of data i reseve---------------------------------------------------
+    $("#saveOrder").click(function (e) {
+        e.preventDefault();
+        var barndimages = [];
+        // purchases.length = 0;
+        $.each($("#detailsTable tbody tr"), function () {
+            var BrandImage = new Object();
+            BrandImage.ImageName = $(this).find('td:eq(1)').html();
+            BrandImage.StringImage = $(this).find('td:eq(3)').html();
+            barndimages.push(BrandImage)
+        });
+        if (barndimages.length == 0) { alert("لاتوجد بيانات مسجله "); return; }
+        $(".loader").css("display", "flex");
+        $("#saveOrder").prop('disabled', true);
+        var brand = new Object();
+        brand.BrandName = $("#brandname").val();
+        brand.Title = $("#title").val(); 
+        brand.Owner = $("#owner").val();
+        brand.Place = $("#place").val(); 
+        brand.Company=$("#company").val();
+        brand.First_PhoneNumer = $("#phonenumber").val();
+        brand.Second_PhoneNumber = $("#phonenumber2").val();
+        brand.BrandImages = barndimages;
+        $.when(saveOrder(brand)).then(function (response) {
+        }).fail(function (err) {
+                alert(err)
+        });
+    });
+    function saveOrder(brand) {
+        return $.ajax({
+            type: 'POST',
+            url: "/Home/Create",
+            data: brand,
+            success: function () {
+                alert("تم الاضافة بنجاح ");
+                $(".loader").css("display", "none");
+                $("#saveOrder").prop('disabled', false);
+                location.reload();
+            },
+            error: function () {
+                alert("Error!");
+                $(".loader").css("display", "none");
+                $("#saveOrder").prop('disabled', false);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,27 @@
+﻿@model Color
+@{ ViewData["Title"] = "Create"; }
+
+
+
+<h4>انشاء لون</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form id="create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ColorName" class="control-label"></label>
+                <input id="mname" asp-for="ColorName" class="form-control" />
+                <span asp-validation-for="ColorName" class="text-danger"></span>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-success" onclick="post('/Colors/Create')">انشاء</a>
+            
+
+            </div>
+            </form>
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,44 @@
+﻿<head>
+    <style>
+        .input {
+            display:flex; flex-direction: row; justify-content: center; align-items: center;
+        }
+        .inside {
+            width:250px; padding:2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="input">
+        <label>الرقم الكلي</label>
+        <div class="inside">
+            <input id="total" type="number" oninput="calc()" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="input">
+        <label>النسبه الئويه</label>
+        <div class="inside">
+            <input id="per" type="number" oninput="calc()" class="form-control" />
+        </div>
+    </div>
+    <div class="input" style="padding:10px;font-size:20px;">
+        <div id="res" > </div> :  الناتج بعدالخصم 
+        <div style="margin:20px"></div>
+        <div id="res1" > </div> : قيمة الخصم
+    </div>
+</body>
+
+<script>
+    function calc() {
+        var number = $("#total").val();
+        var percenrage = $("#per").val();
+        if (number != "" && percenrage != "") {
+            $("#res").html(parseFloat(number) - (parseFloat(number) * parseFloat(percenrage / 100)));
+            $("#res1").html((parseFloat(number) * parseFloat(percenrage / 100)));
+        } else {
+            $("#res").html("0");
+            $("#res1").html("0");
+        }
+    }
+</script>

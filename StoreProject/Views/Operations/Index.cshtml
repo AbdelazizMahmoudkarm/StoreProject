@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}  
+<br />
+<h1 style="text-align:center"> ........اختار العمليه</h1>
+<body>
+    <div class="container">
+        <div class="row" style="text-align:center">
+            <div class="col-lg-3 col-md-2">
+                <a href="#" class="btn btn-success" onclick="getdata('/Operations/CountItems')">اجمالي سعر المخزن</a>
+            </div>
+            <div class=" col-lg-3 col-md-2">
+                <a href="#" class="btn btn-danger" onclick="less('/Operations/LowCountItems')">عناصر علي وشك النفاذ</a>
+            </div>
+            <div class=" col-lg-3 col-md-2">
+                <input id="date1" type="date" placeholder="سنه / شهر / يوم"  class="form-control" />
+               
+                <span style="text-align:center">
+                    بدايه
+                </span>
+            </div>
+            <div class=" col-lg-3 col-md-2">
+                <input id="date2" type="date" placeholder="سنه / شهر / يوم" class="form-control" onchange="gard()" />
+                <span style="text-align:center">
+                    نهايه
+                </span>
+            </div>
+        </div>
+        <div class="row" style="text-align:center">
+            <div class=" col-md-3">
+                <a href="#" class="btn btn-success" onclick="getdata('/Operations/Day')">اجمالي مابيع اليوم</a>
+            </div>
+            <div class=" col-md-3">
+                <a href="#" class="btn btn-success" onclick="backup('/Operations/Backup')">عمل نسخه احتياطيه</a>
+            </div>
+            <div class=" col-md-3">
+                <a href="#" class="btn btn-success" onclick="billwithnumber('/Operations/Findbill')">مكسب الفاتوره</a>
+            </div>
+            </div>
+        <div class="row" style="text-align:center;padding-top:20px">
+            <div class=" col-md-3">
+                <a href="#" class="btn btn-success" onclick="dept('/Operations/Dept')">اجمالي المدين</a>
+            </div>
+            <div class=" col-md-3">
+                <a href="#" class="btn btn-dark" onclick="dept('/Operations/Calpercent')">حساب النسبه المئويه</a>
+            </div>
+        </div>
+    </div>
+</body>
+

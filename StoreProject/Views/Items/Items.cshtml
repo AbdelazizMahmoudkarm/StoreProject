@@ -1,0 +1,134 @@
+﻿@model IEnumerable<dynamic>
+<div class="row">
+    <div class="col-lg-8">
+        <h4 id="name" style="color:#ff6347; display:inline; text-align:center"></h4>
+    </div>
+    <div class="col-lg-4" style="padding-bottom:2px">
+        <a href="#" style="float:right" class="btn btn-success" onclick="addelement()">اضافة عنصر</a>
+    </div>
+</div>
+    <table class="table table table-striped">
+        <thead>
+            <tr style="background-color:cornflowerblue;">
+                <th>الوحده</th>
+                <th>اللون</th>
+                <th>
+                    <table class="table table-striped">
+                        <tr>
+                            <th width="20%">الكميه</th>
+                            <th width="20%">سعر الشراء </th>
+                            <th width="20%">سعر البيع</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="detailsTable">
+            @foreach (var item in Model)
+            {
+                <tr id="@item.ItemId">
+                    <td> @item.MeasureName </td>
+                    <td> @item.ColorName </td>
+                    <td>
+                        <table class="table table-striped">
+                            @foreach (var itemquantity in item.ItemQuantity)
+                            {
+                                <tr id="Q_@itemquantity.ItemQuantityId">
+                                    <td width="20%">@itemquantity.Quantity</td>
+                                    <td width="20%">@itemquantity.BuyPrice </td>
+                                    <td width="20%">@itemquantity.SalePrice </td>
+                                    <td>
+                                        <a href="#" class=" btn btn-primary" onclick="editItem('@itemquantity.ItemQuantityId','/Items/EditItemQuantity')"> <span class="fa fa-edit"></span></a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class=" btn btn-danger" onclick="deleteItemQuantity('@itemquantity.ItemQuantityId','/Items/DeleteItemQuantity')">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+                    <td>
+                        <a href="#" class=" btn btn-primary" onclick="addQuantity('@item.ItemId','/Items/CreateItemQuantity')">
+                            <span class="fa fa-plus"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" class=" btn btn-primary" onclick="editItem('@item.ItemId  ','/Items/Edit')">
+                            <span class="fa fa-edit"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-danger" onclick="deleteItem('@item.ItemId')">
+                            <span class="fa fa-trash"></span>
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<script>
+    categoryId=@Model.FirstOrDefault().CategoryId;
+    function addelement() {
+        $("#content2").empty();
+        $("#categoryId").val("")
+        $("#aquantity").val("")
+        $("#asaleprice").val("")
+        $("#abuyprice").val("")
+        $("#content2").load("/Items/AddItems", function () {
+            $("#categoryId").val(categoryId);
+            $("#additems").modal("show");
+        })
+        //$("#additems").modal("show");
+    }
+    function addQuantity(id,url) {
+        $("#content2").empty();
+        $("#categoryId").val("")
+        $("#aquantity").val("")
+        $("#asaleprice").val("")
+        $("#abuyprice").val("")
+        $("#content2").load(url, function () {
+
+            $("#categoryId").val(categoryId);
+            $("#itemId").val(id);
+            $("#additems").modal("show");
+        })
+        //$("#additems").modal("show");
+    }
+    function editItem(id, url) {
+        $("#categoryId").val(categoryId);
+        $("#content2").empty();
+        param = url + "?id=" + id;
+        $("#content2").load(param, function () {
+            $("#additems").modal("show");
+        })
+    }
+    function deleteItemQuantity(id,url) {
+        var result = false;
+        result = confirm("هل انت متاكد من حذف العنصر بالكميه " + $("#Q_" + id).find('td:eq(0)').html());
+                if (result == true) {
+                    $.ajax({
+                        type: "POST",
+                        data: { itemQuantityId: id },
+                        url: url,
+                        success: function (data) {
+                            $("#Q_" + id).css("background-color", "#ff6347").fadeOut(800, function () {
+                                $(this).remove();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            alert("خطا");
+                        }
+                    });
+                } else
+                return;
+    }
+</script>

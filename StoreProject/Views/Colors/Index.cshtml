@@ -1,0 +1,104 @@
+﻿@model PaginatedList<Color>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<script src="~/js/Java_methods.js"></script>
+<style>
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: aliceblue;
+        color: black
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: rgba(216, 203, 203, 0.90);
+        color: black
+    }
+    body {
+        background-color: #ddd;
+        font-size:20px;
+    }
+    table{
+        padding:50px;
+    }
+    .btn-danger {
+        width: 60px;
+    }
+
+    .btn-primary {
+        width: 60px;
+    }
+</style>
+<body>
+    <br />
+    <div style="display: inline-block;color:white;padding-bottom:20px">
+        <a class="btn btn-success" onclick="create_get('/Colors/Create')">انشاء لون <span class="fa fa-plus"></span></a>
+    </div>
+    <h3 style="display:inline-block; width:60%;text-align:center;color:black">الوان</h3>
+    <table class="table table-striped" style="margin-bottom:20px;">
+        <thead style="color:cornflowerblue">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].ColorName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="row_@item.ColorId">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ColorName)
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-primary" onclick="edit_get(@item.ColorId,'/Colors/Edit')">
+
+                            <span class="fa fa-edit"></span>
+                        </a>
+                        <a href="#" class="btn btn-danger" onclick="del(@item.ColorId,'@item.ColorName','/Colors/Delete')">
+                            <span class="fa fa-trash"></span>
+                        </a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+        <div style="position:absolute;bottom:60px;">
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-success @prevDisabled">
+
+                <span class="fa fa-backward"></span>
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-success @nextDisabled">
+                <span class="fa fa-forward"></span>
+            </a>
+        </div>
+    </body>
+@*<div class="modal fade" id="mymodal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body" id="content2">
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-danger" onclick="del_post('/Colors/Delete')">نعم</a>
+                <a href="#" class="btn btn-success" data-dismiss="modal">لا</a>
+            </div>
+        </div>
+    </div>
+</div>*@

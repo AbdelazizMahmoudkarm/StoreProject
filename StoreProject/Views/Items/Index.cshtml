@@ -1,0 +1,252 @@
+﻿@model PaginatedList<Category>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<script src="~/js/Java_methods.js"></script>
+<style>
+    #additems, #Showdetails, edititems {
+        overflow-y: scroll
+    }
+
+    body {
+        background-color: #dddd;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .btn-danger {
+        width: 60px;
+    }
+
+    .btn-primary {
+        width: 60px;
+    }
+</style>
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-sm-3">
+            <div class="input-group-prepend">
+                <i class="fa fa-search alert"></i>
+                <input class="form-control" id="search" placeholder="اسم العنصر" oninput="searchitem()" />
+            </div>
+        </div>
+        <div class="col-lg-5 col-sm-3">
+            <strong style="font-size:x-large;font-weight:bold;color:red">عناصر</strong>
+        </div>
+        <div class="col-lg-4 col-sm-3">
+            <button class=" btn btn-primary fa fa-plus" style="height:40px;width:200px" onclick="create_get('/Items/Create')"> انشاء عنصر</button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped" style="color:black;margin-bottom:20px">
+            <thead style="background-color: #147aa1;">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].CategoryName)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Store)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="datasearch">
+                @foreach (var item in Model)
+                {
+                    <tr id="row_@item.CategoryId">
+                        <td>
+                            <a href="#" style="color:blue" onclick="details(@item.CategoryId,'@item.CategoryName','/Items/Items')">@item.CategoryName</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Store.StoreName)
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-primary" onclick="edit_get(@item.CategoryId, '/Items/EditName')">
+                                <span class="fa fa-edit"></span>
+                            </a>
+                            <a href="#" class="btn btn-danger" onclick="del(@item.CategoryId,'@item.CategoryName','/Items/DeleteConfirmed')">
+                                <span class="fa fa-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="additems" style="color:black">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" style=" width: 700px">
+        <div class="modal-content" style="background-color:#147aa1">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+            </div>
+            <div class="modal-body" id="content2">
+
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div style="position:absolute;bottom:60px;">
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-success @prevDisabled">
+
+        <span class="fa fa-backward"></span>
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-success @nextDisabled">
+        <span class="fa fa-forward"></span>
+    </a>
+</div>
+
+<script>
+     document.getElementById("search").focus();
+    function showmodal(categoryId, name,url) {
+
+        details(categoryId, name, url);
+    }
+    function itemdelete(Name, Id) {
+        var result = confirm(" هل انت متاكد من حذف " + Name);
+        if (result == true) {
+            $.ajax({
+                type: "POST",
+                data: { id: Id },
+                url: "/Items/DeleteConfirmed",
+                success: function (data) {
+                    $("#row_" + Id).css("background-color", "#ff6347").fadeOut(800, function () {
+                        $(this).remove();
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    alert("خطا");
+                }
+            });
+        }
+    }
+
+    function editname(id, url) {
+        $("#content").empty();
+        var url = url + "?id=" + id;
+        $("#content").load(url, function () {
+            $("#createitems").modal("show");
+        })
+    }
+    var categoryId = 0
+    function details(categoryId, itemName,url) {
+        $("#categoryId").val(categoryId);
+        categoryId = categoryId;
+        var url = url + "?categoryId=" + categoryId;
+        $("#detailsTable").empty();
+        $("#name").empty();
+        $("#content").load(url, function () {
+           
+            $("#name").append("" + itemName);
+            $("#mymodal").modal("show");
+        })
+    }
+    function deleteItem(id) {
+        var billsnumber = "";
+        var result = false;
+        $.ajax({
+            url: "/Items/Getbillsnumber",
+            type: "POST",
+            data: { id: id },
+            success: function (data) {
+                $.each(data, function (index, value) {
+                    billsnumber = value + "  " + billsnumber;
+                });
+                if(billsnumber!=""){
+                     result = confirm(" هل انت متاكد من الحذف هذا العنصر موجود في الفواتير رقم " + billsnumber);
+                }else
+                {
+                    result = confirm(" هل انت متاكد من الحذف هذا العنصر");
+                }
+                if (result == true) {
+                    $.ajax({
+                        type: "POST",
+                        data: { id: id },
+                        url: "/Items/DelItemDtails",
+                        success: function (data) {
+                            $("#" + id).css("background-color", "#ff6347").fadeOut(800, function () {
+                                $(this).remove();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            alert("خطا");
+                        }
+                    });
+                } else
+                    return;
+            }
+        });
+
+    }
+
+    function saveOrder(Item) {
+        return $.ajax({
+            type: 'POST',
+            url: "/Items/Create",
+            data: Item,
+            success: function (result) {
+                alert("تم بنجاح ");
+                location.reload();
+            },
+            error: function () {
+                alert("Error!")
+            }
+        });
+    }
+    function closeeditmodel() {
+        $("#edititems").modal("hide");
+    }
+    function searchitem() {
+        var searchvalue = $("#search").val();
+        if (searchvalue == 0) {
+            location.reload();
+        }
+        if (searchvalue == '') return;
+        var setdata = $("#datasearch");
+        setdata.html("");
+        $.ajax({
+            url: "/Items/SearchItem",
+            dataType: "json",
+            data: { search: searchvalue },
+            success: function (data) {
+                if (data.length == 0) {
+                    setdata.append('<tr style="color:red;"><td colspan="7"> لا توجد بيانات</td></tr>');
+                    return;
+                } else {
+                    $.each(data, function (index, value) {
+                        var categoryname = value.categoryName;
+                        var categoryid = value.categoryId;
+                        var data = "<tr id=row_" + categoryid + ">" 
+                            + '<td><a href="#" onclick="details(\'' + categoryid + '\' ,\'' + categoryname + '\' ,\'' + '/Items/Items' + '\')">' + categoryname + '</a></td>'
+                            + "<td>" + value.store.storeName + "</td>"
+                            + '<td><a style="margin-left:5px;" href="#" class="btn btn-primary" onclick="edit_get(\'' + categoryid + '\',\'' + '/Items/EditName' + '\')"><span class="fa fa-edit"></span></a>'
+                            + '<a style=" margin-left:5px;" href="#" class="btn btn-danger" onclick="itemdelete(\'' + categoryname + '\',\'' + categoryid + '\')"><span class="fa fa-trash"></span></a>'
+                            + '</td>'
+                            + "</tr>";
+                        setdata.append(data);
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+            }
+        });
+    }
+</script>

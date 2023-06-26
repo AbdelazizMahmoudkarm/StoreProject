@@ -1,0 +1,293 @@
+﻿@model Bill
+@{
+    Layout = null;
+    int billid = 0; int index = 0; int index2 = 0; double discard = 0, paid = Model.Pay;
+    double mortagah = 0;
+}
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" media="screen" />
+    <style>
+        body {
+            direction: rtl;
+            margin: auto;
+            font-size: medium;
+        }
+
+        .just {
+            display: flex;
+            align-items: center;
+        }
+
+        span {
+            padding: 10px;
+        }
+
+        .p {
+            border: 1px solid black;
+            font-size: medium;
+            border-radius: 10px;
+            text-align: center
+        }
+
+        table {
+            text-align: center;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        th, td {
+            border: 1px solid black;
+            font-size: 22px
+        }
+      /*  .rotate {
+            -webkit-transform: rotate(-90deg);   
+        }*/
+
+        @@page {
+            size: A3 portrait;
+            margin-top: 5mm;
+            margin-bottom: 136mm;
+            margin-right: 46mm;
+            margin-left: 48mm;
+        }
+        /*  table thead::before {
+                counter-increment: page;
+                counter-reset: page 1;
+                content: "Page " counter(pages) " of " counter(page);
+            }*/
+    </style>
+</head>
+@{if (Model == null)
+    {
+    <p style="text-align:center;font-size:larger;font-weight:bold; color:red"> لا توجد عناصر للعرض</p>
+    }
+    else
+    {
+    List<BillItem> discards = new List<BillItem>();
+        discards = Model.BillItems.Where(x => x.DiscardQuantity > 0).ToList();
+        double discount = Model.BillItems.Count() == 0 ? Model.Discount : Model.Discount;
+        double Bill = 0;
+        double totalBill = 0;
+        billid = Model.BillId;
+    <div class="row">
+                <div class="col-md-2"></div>
+                <div id="dd" class="col-md-9">
+                   
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="8">
+                                    <div class="p">
+                                        @*<span style="font-size:x-large;">مركز تلوين الفتح</span>*@
+                                        <div class="just">
+                                            <span>
+                                            <span id="brand" style=font-size:26px></span>
+                                            <br />
+                                                <span id="company"> </span>
+                                                <br />
+                                                <span id="title"> </span>
+                                                <br />
+                                                <span id="place"> </span>
+                                                <br />
+                                                <span id="owner"> </span>
+                                            </span>
+                                            <span id="brandimage" style="float:left;">
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr style="background-color:lightgray; text-align:center">
+                                <th colspan="2">رقم المعامله: @Model.BillId </th>
+                                <th colspan="2"> <div id="txt" style="text-align:center;"> </div></th>
+                                <th colspan="4">اسم العميل : @Model.Customer.Name </th>
+                            </tr>
+                            <tr>
+                            <th colspan="4">تاريخ الشراء : @Model.CreationDateTime.ToString("dd/MM/yyyy hh:mm tt")</th>
+                                <th colspan="4" style="text-align:center">اسم الموظف :@Model.UserName </th>
+                            </tr>
+                            <tr>
+                                <th>م</th>
+                                <th>المنتج</th>
+                                <th>الوحده</th>
+                                <th>اللون</th>
+                                <th>الكميه</th>
+                                <th>السعر</th>
+                                <th>السعر الكلي</th>
+                                <th>ملاحظات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*<tr><td class="rotate" rowspan="16">البضاعه المباعه لاترد</td></tr>*@
+                            @foreach (var billItem in Model.BillItems)
+                        {
+                            if (billItem.Quantity > 0)
+                            {
+                                index++;
+                                <tr>
+                                    <td>@index</td>
+                                    <td width="30%">@billItem.ItemName</td>
+                                    <td>@billItem.ItemQantity.Item.Measure.MeasureName</td>
+                                    @if (billItem.ItemQantity.Item.Color.ColorName == "عادي")
+                                    {
+                                        <th style="text-align:center">-----</th>
+                                    }
+                                    else
+                                    {
+                                        <td>@billItem.ItemQantity.Item.Color.ColorName</td>
+                                    }
+                                    <td>@billItem.Quantity.ToString("0.00")</td>
+                                    @if (Model.IsBuy)
+                                    {
+                                        Bill = billItem.Quantity * billItem.BuyPrice;
+                                        <td>@billItem.BuyPrice.ToString("0.00")</td>
+                                       
+                                    }
+                                    else
+                                    {
+                                        Bill = billItem.Quantity * billItem.SalePrice;
+                                        <td>@billItem.SalePrice.ToString("0.00")</td>
+                                    }
+                                    <td>@Bill.ToString("0.00")</td>
+                                    <td></td>
+                                </tr>
+                                totalBill = totalBill + Bill;
+                            }
+                        }
+                            @if (discards.Count() != 0)
+                        {
+                            <tr style="background-color:lightgray"> <td colspan="8" style="text-align:center"> المرتجع</td></tr>
+                            @foreach (var discarded in discards)
+                            {
+                                index2++;
+                                <tr>
+                                    <td>@index2</td>
+                                    <td>@discarded.ItemName</td>
+                                    <td>@discarded.ItemQantity.Item.Measure.MeasureName</td>
+                                    <td>@discarded.ItemQantity.Item.Color.ColorName</td>
+                                    <td>@discarded.DiscardQuantity</td>
+                                    @if (Model.IsBuy)
+                                    {
+                                        <td>@discarded.BuyPrice</td>
+                                        discard = discarded.DiscardQuantity * discarded.BuyPrice;
+                                    }
+                                    else
+                                    {
+                                          <td>@discarded.SalePrice</td>
+                                        discard = discarded.DiscardQuantity * discarded.SalePrice;
+                                    }
+                                  
+                                    
+                                    <td>@discard.ToString("0.00")</td>
+                                    <td></td>
+                                </tr>
+                                mortagah += discard;
+                            }
+                        }
+
+                        </tbody>
+                        <tfoot>
+                                <tr>
+                                    <th colspan="8">
+                                        <strong>سعر الفاتوره قبل الخصم والمرتجع : </strong>@((totalBill+mortagah).ToString("0.00")) جنيه
+                                    </th>
+                                </tr>
+                            <tr style="background-color:lightgray">
+                            <th colspan="1"><strong>الخصم:</strong>@discount.ToString("0.00")جنيه</th>
+                              <th colspan="1"><strong> المرتجع:</strong><span>@mortagah.ToString("0.00")جنيه</span></th>
+                                <th colspan="4" width="45%">
+                                <strong> سعر الفاتوره بعد الخصم والمرتجع:</strong><span>@((totalBill - discount).ToString("0.00"))جنيه</span>
+                            </th>
+                                <th colspan="2" ><strong>المستلم من العميل :</strong>@paid.ToString("0.00")جنيه</th>
+                            </tr>
+                        @{
+                            double hasmoney = paid - totalBill + discount;
+                            double dept = totalBill - paid - discount;
+                                    }
+                            <tr>
+                            <td colspan='4' class="pull-right" style="margin-right:100px; "><strong>الرصيد : </strong> @(hasmoney > 0 ? (hasmoney + discount).ToString("0.00") : "0.00") جنيه </td>
+                                        <td colspan='4' class="pull-right" style="margin-right:100px;"><strong>مدين :  </strong> @(dept > 0? dept.ToString("0.00"): "0.00") جنيه </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><strong>الرصيد الكلي :@(ViewBag.total >0 ? ViewBag.total.ToString("0.00") : "0.00") جنيه </strong></td>
+
+                            <td colspan="4"><strong> الكلي الدين : @(ViewBag.total<0 ?Math.Abs(ViewBag.total).ToString("0.00") : "0.00") جنيه </strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">
+                                    <div class="p">
+                                        <div style="margin:5px">
+                                            مجموعة الفتح للدهانات والديكورات - انشائي - ديكوري - تلوين بالكمبيوتر - ورق حائط 3D - جيرانيت وجايه - جرافيت وجايه
+                                            - عدد يدويه
+                                        </div>
+                                    </div>
+                                    <div style="background-color: lightgray;margin-top:5px;">
+                                        (تلوين الكمبيوتر لا يرد ولا يستبدل)
+                                    </div>
+                                    <span id="numbers">
+                                 <img src="~/Img/Screenshot_2021-01-10-11-15-59-06.jpg" width="30" height="30" />
+                                    </span>
+                                
+                                </td>
+                            </tr>
+                        </tfoot>
+                 
+                            <tr style="background-color:lightgray">
+                                <th colspan="4">المدفوع</th>
+                                <th colspan="4">تاريخ الدفع</th>
+                            </tr>
+                    @if (ViewBag.PaymentList.Count != 0)
+                    {
+                        @foreach (var item in ViewBag.paymentList)
+                        {
+                            <tr>
+                                <td colspan="4">@item.Pay.ToString("0.00") جنيه </td>
+                                <td colspan="4">@item.Date.ToString("dd/MM/yyyy hh:mm tt")</td>
+                            </tr>
+                        }
+                    }else
+                    {
+                        <tr><td colspan="8">لا يوجد </td></tr>
+                    }
+                </table>
+                </div>
+
+                <div class="col-md-1"></div>
+    </div>
+    <span style="font-size:17px; margin-left:20%">
+    </span>
+    }
+    }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@section scripts{
+}
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'POST',
+            url: "/Bills/GetBrandImages",
+            success: function (data) {
+                $("#title").html(data.title);
+                $("#owner").html(" ادارة أ/"+data.owner);
+                $("#place").html(data.place);
+                $("#brand").html(data.brandName);
+                $("#company").html(data.company);
+                $("#numbers").html($("#numbers").html() +" "+ data.first_PhoneNumer + " : " + data.second_PhoneNumber);
+                var img;
+                $.each(data.brandImages, function (index, val) {
+                    img = document.createElement("img");
+                    img.src = val.stringImage;
+                    img.height = 70;
+                    img.width = 100;
+                    $("#brandimage").append(img);
+                   
+                });
+                img.onload = function () { print() }
+            },
+        });
+        var itemCount =@index;
+        $("#txt").text("عدد العناصر :" + itemCount);
+       // setTimeout(()=>print(),1500);
+        
+    });
+</script>

@@ -1,0 +1,92 @@
+﻿@model PaginatedList<Store>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<script src="~/js/Java_methods.js"></script>
+<style>
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: aliceblue;
+        color: black
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: rgba(216, 203, 203, 0.90);
+        color: black
+    }
+
+    body {
+        background-color: #ddd;
+        font-size:20px;
+        text-align:center;
+    }
+
+    .btn-danger {
+        width: 60px;
+    }
+
+    .btn-primary {
+        width: 60px;
+    }
+</style>
+<br/>
+<div class="row">
+    <div class="col-md-8">
+        مخازن
+    </div>
+    <div class="col-md-4">
+        <a class="btn btn-success" onclick="create_get('/Stores/Create')">انشاء عنصر <span class="fa fa-plus"></span></a>
+    </div>
+
+</div>
+
+<table class="table table-striped" style="color:#e2d6d6;margin-bottom:20px">
+    <thead style="background-color:#1d1985;">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].StoreName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="row_@item.StoreId">
+                <td>
+                    @Html.DisplayFor(modelItem => item.StoreName)
+                </td>
+                <td>
+                    <a class="btn btn-primary" onclick="edit_get(@item.StoreId,'/Stores/Edit')">
+
+                        <span class="fa fa-edit"></span>
+                    </a>
+                    <a class="btn btn-danger" onclick="del(@item.StoreId,'@item.StoreName','/Stores/Delete')">
+                        <span class="fa fa-trash"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div style="position:absolute;bottom:60px;">
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-success @prevDisabled">
+
+        <span class="fa fa-backward"></span>
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-success @nextDisabled">
+        <span class="fa fa-forward"></span>
+    </a>
+</div>

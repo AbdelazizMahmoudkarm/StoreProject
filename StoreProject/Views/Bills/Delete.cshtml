@@ -1,0 +1,32 @@
+﻿@model Bill
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>حذف</h1>
+@if (Model != null)
+{
+<h3>هل انت متاكد من حذف الفاتوره رقم ? @Model.BillId</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd class>
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="BillId" />
+        <label>  @Html.DisplayNameFor(model => model.ReturnBillItemToStore) </label>
+        <input type="checkbox" asp-for="ReturnBillItemToStore" />
+        <input type="submit" value="حذف" class="btn btn-danger"/>
+    </form>
+</div>
+}
+else
+{
+    <div style="text-align:center;font-size:x-large;color:orangered;font-weight:bold">غير مصرح لك استخدام الحذف</div>
+}

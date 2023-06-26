@@ -1,0 +1,27 @@
+﻿@model Measure
+
+@{
+    ViewData["Title"] = "Create";
+}
+<h4>انشاء صنف</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form id="create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input hidden asp-for="MeasureId" />
+            <div class="form-group">
+                <label asp-for="MeasureName" class="control-label"></label>
+                <input id="mname" asp-for="MeasureName" class="form-control" />
+                <span asp-validation-for="MeasureName" class="text-danger"></span>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-success" onclick="post('/Measurements/Create', '/Measurements/Index')">انشاء</a>
+                @*<a href="#" class="btn btn-danger" data-dismiss="modal">الغاء</a>*@
+            </div>
+            </form>
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title class="brand">@ViewData["Title"]  </title>
+    <link rel="stylesheet" href="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+
+    <style>
+        .ui-autocomplete {
+            max-height: 170px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+        }
+
+        li a {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .above {
+            position: fixed;
+            top: 40%;
+            margin-left: 24%;
+            background-color: white;
+        }
+
+        .loader {
+            border: 16px solid #DDD; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 55%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: absolute;
+            display: none;
+        }
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="side-navbar">
+        <div class="side-navbar-wrapper">
+            <!-- Sidebar Header    -->
+            <div class="sidenav-header d-flex align-items-center justify-content-center">
+                <!-- User Info-->
+                <div class="sidenav-header-inner text-center">
+                    <img src="/Img/user.jpg" alt="person" class="img-fluid rounded-circle">
+                    <h2 class="h5"> @User.Identity.Name</h2>
+                </div>
+                <!-- Small Brand information, appears on minimized sidebar-->
+            </div>
+            <!-- Sidebar Navigation Menus-->
+            <div class="main-menu">
+                <h5 class="sidenav-heading">رئيسي</h5>
+                <ul id="side-main-menu" class="side-menu list-unstyled">
+                    <li> <a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Home" asp-action="Index"> <i class="fa fa-home"></i>الرئيسيه </a></li>
+                    <li><a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Items" asp-action="Index"> <i class="fa fa-database"></i>المخازن </a></li>
+                    <li> <a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Bills" asp-action="Index"><i class="fa fa-money-bill"></i>فواتير </a></li>
+                    <li> <a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Bills" asp-route-isbuy="True" asp-action="Index"> <i class="fa fa-money-bill"></i>فاتورة شراء</a></li>
+                    <li>
+                        <a href="#exampledropdownDropdown" style="font-size:20px" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-commenting"></i>وحدات والوان</a>
+                        <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                            <li><a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Measurements" asp-action="Index">الوحدات</a></li>
+                            <li>  <a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Colors" asp-action="Index">الوان</a></li>
+                            <li>  <a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Stores" asp-action="Index"> المخازن</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <hr />
+            <div class="admin-menu">
+                <h5 class="sidenav-heading">عناصر اضافيه</h5>
+                <ul id="side-admin-menu" class="side-menu list-unstyled">
+                    <li><a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Customers" asp-action="Index"> <i class="fa fa-database"> </i>بيانات عملاء</a></li>
+                    <li>  <a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Operations" asp-action="Index"> <i class="fa fa-chart-bar"> </i>احصائيات</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="page">
+        <!-- navbar-->
+        <header class="header">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <div class="navbar-header">
+                            <a id="toggle-btn" href="#" class="menu-btn"><i class="fa fa-bars"> </i></a><a asp-controller="Home" asp-action="Index" class="navbar-brand">
+                                <div class="brand-text d-none d-md-inline-block" style="font-size:large;font-weight:bold"><span class="brand"> </span></div>
+                            </a>
+                        </div>
+                             <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a href="#" id="brandremove" class="nav-link text-light" style="font-size:20px; display:none" onclick="Remove()"> حذف البيانات <span class="fa fa-trash"></span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" style="font-size:20px" asp-controller="Account" asp-action="Register">تسجيل<span class="fa fa-registered"></span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" style="font-size:20px" asp-area="" asp-controller="Account" asp-action="ListUser">المستخدمين<span class="fa fa-user"></span></a>
+                                </li>
+                            }
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" style="font-size:20px" asp-action="LogOut" asp-controller="/Account" title="Manage"> <span class="d-none d-md-inline-block">خروج</span><i class="fa fa-sign-out"></i></a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" style="font-size:20px" asp-controller="Account" asp-action="Login" title="دخول"> <span class="d-none d-md-inline-block">دخول</span><i class="fa fa-sign-in"></i></a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                <div class="modal fade" id="mymodal">
+                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            </div>
+                            <div class="modal-body" id="content">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @RenderBody()
+            </main>
+        </div>
+    <footer class="border-top  footer text-muted">
+            <div class="container">
+                &copy;A.B_MK
+            </div>
+        </footer>
+    </div>
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+    <link href="~/lib/jquery/dist/jquery-ui.structure.css" rel="stylesheet" />
+    <link href="~/lib/jquery/dist/jquery-ui.theme.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery-ui.js"></script>
+    <script src="~/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/js/front.js"></script>
+    <script src="~/js/Java_methods.js"></script>
+    @RenderSection("Scripts", required: false)
+    <script>
+        document.onload = AddBrands();
+    </script>
+</body>
+
+</html>

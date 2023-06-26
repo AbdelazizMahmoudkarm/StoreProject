@@ -1,0 +1,32 @@
+﻿@model Store
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+<h4>تعديل مخزن</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form id="create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StoreId" />
+            <div class="form-group">
+                <label asp-for="StoreName" class="control-label"></label>
+                <input asp-for="StoreName" class="form-control" />
+                <span asp-validation-for="StoreName" class="text-danger"></span>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-danger" data-dismiss="modal">الغاء</a>
+                <a href="#" class="btn btn-success" onclick="post('/Stores/Edit','/Stores/Index')">تعديل</a>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
