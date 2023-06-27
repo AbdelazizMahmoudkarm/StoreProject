@@ -80,51 +80,6 @@
 			   <param name="filter"> delegate Func which take generic type of class and return bool</param>
 			   <returns>Class type as queryable</returns>
 		</CheckNull>
-		<AutoComplete>
-			 <summary>
-				  Get a list of catrgory class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo 
-			</summary>
-			    <param name="filter">type of delegate category </param>
-			    <returns> List of category </returns>
-		</AutoComplete>
-		<GetStores>
-			 <summary>
-				   Get a list of store class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	  
-			</summary>
-			   <param name="filter">type of delegate category </param>
-			   <returns> List of store </returns>
-		</GetStores>
-		<SearchBills>
-			 <summary>
-				 Get a list of anonymous class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	
-			</summary>
-			   <param name="filter"> expression type of Func which take bill and return false</param>
-			   <returns> List of of anonymous object </returns>
-		</SearchBills>
-		<ColorFilter>
-			 <summary>
-				 Get a list of anonymous class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	
-			</summary>
-			     <param name="filter"> expression type of Func which take item and return false</param>
-			     <param name="isbuy"> if is buy or not </param>
-			     <returns> List of of anonymous object </returns>
-		</ColorFilter>
-		<MeasureFilter>
-			 <summary>
-				   Get a list of anonymous class with filter expresstion type of delegate  <paramref name="filter"/> it define in billRepo	  
-			</summary>
-			     <param name="filter"> expression type of Func which take item and return false</param>
-			     <param name="isbuy"> if is buy or not </param>
-			     <returns> List of of anonymous object </returns>
-		</MeasureFilter>
-		<GetItemQuantityFromItem>
-			 <summary>
-				 Get item with itemquantity object inside
-			</summary>
-			 <param name="filter"> expression type of Func which take item and return false</param>
-			 <param name="isbuy"> if isbuy or not</param>
-			 <returns> object of item</returns>
-		</GetItemQuantityFromItem>
 		<GetListOfItems>
 			 <summary>
 				 Get list lof item with itemqauntity and meadure and color	

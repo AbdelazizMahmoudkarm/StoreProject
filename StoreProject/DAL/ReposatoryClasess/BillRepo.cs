@@ -125,7 +125,7 @@ namespace StoreProject.DAL
           =>GetAsQueryable(filter).Include(b => b.Customer).OrderByDescending(x => x.BillId);
 
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/AutoComplete/*'/>
-        public override List<Category> AutoComplete(Expression<Func<Category, bool>> filter)
+        public List<Category> AutoComplete(Expression<Func<Category, bool>> filter)
        => CheckNull(filter).Select(x => new Category { CategoryName = x.CategoryName, CategoryId = x.CategoryId }).ToList();
 
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/GetByIdAsync/*'/>

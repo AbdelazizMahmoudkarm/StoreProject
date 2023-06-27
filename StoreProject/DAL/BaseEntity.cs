@@ -34,19 +34,7 @@ namespace StoreProject.DAL
         => _operationHelper.GetAnyWithoutCondition<O>().Any()?_operationHelper.GetAnyWithoutCondition<O>().Max(filter) + id: 1;
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/CheckNull/*'/>
         protected IQueryable<O> CheckNull<O>(Expression<Func<O, bool>> filter) where O : class =>
-         filter is null ? _operationHelper.GetAnyWithoutCondition<O>() : _operationHelper.GetAny(filter);
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/AutoComplete/*'/>
-        public virtual List<Category> AutoComplete(Expression<Func<Category, bool>> filter)
-       => new();
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/GetStores/*'/>
-        public virtual List<Store> GetStores(Expression<Func<Store, bool>> filter)
-      => new();
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/SearchBills/*'/>
-        public virtual IEnumerable<object> SearchBills(Expression<Func<Bill, bool>> filter)
-        => new List<object>();
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/ColorFilter/*'/>
-        public virtual IEnumerable<object> ColorFilter(Expression<Func<Item, bool>> filter = null,bool isbuy=false)
-       => new List<object>();
+         filter is null ? _operationHelper.GetAnyWithoutCondition<O>() : _operationHelper.GetAny(filter);     
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/MeasureFilter/*'/>
         public IEnumerable<object> MeasureFilter(Expression<Func<Item, bool>> filter = null,bool isbuy=false)
         {
@@ -78,10 +66,6 @@ namespace StoreProject.DAL
             }
             yield break;
         }
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/GetItemQuantityFromItem/*'/>
-        public virtual ItemQuantity GetItemQuantityFromItem(Expression<Func<Item, bool>> filter = default, bool isbuy = false)
-       => new();
-
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/GetListOfItems/*'/>
         public IEnumerable<dynamic> GetListOfItems(Expression<Func<Item,bool>> filter,Func<ItemQuantity,bool>filter2)
         {
@@ -205,9 +189,6 @@ namespace StoreProject.DAL
             }
             yield break;
         }
-        ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/GetBillWithBillItemsWithItemAndColorAndMeasure/*'/>
-        public virtual Bill GetBillWithBillItemsWithItemAndColorAndMeasure(Expression<Func<Bill,bool>> bill_filter, Func<BillItem,bool> billItem_filter = null)
-        => new();
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/DeleteAllBillContentWithoutRetreiveDataToStore/*'/>
         public virtual Task<bool> DeleteAllBillContentWithoutRetreiveDataToStore(int id)
             => (Task<bool>)Task.CompletedTask;
