@@ -221,14 +221,17 @@ namespace StoreProject.DAL.ReposatoryClasess
         /// Return item Quantity from bill to store
         /// </summary>
         /// <param name="id"> the id of item which you want to return it </param>
+        /// <param name="isbuy">Boolean parameter for check if item is buy or not</param>
         /// <returns> void method></returns>
-        public async Task RetriveDatatoItemQuantityAsync(int id)
+        public async Task RetriveDatatoItemQuantityAsync(int id,bool isbuy)
         {
             var billItem = await GetByIdAsync(id);
             if (billItem is not null)
             {
-                if (billItem.Quantity != 0)
+                if (billItem.Quantity != 0&&!isbuy)
                    await ItemQauntityRepo.PlusQuantityAsync(billItem.ItemQuantityId, billItem.Quantity);
+                else
+                    await ItemQauntityRepo.MinusQuantityAsync(billItem.ItemQuantityId, billItem.Quantity);
             }
         }
         /// <summary>
@@ -238,18 +241,23 @@ namespace StoreProject.DAL.ReposatoryClasess
         /// <returns> boolean as asynchronous </returns>
         public override async Task<bool> DeleteEntityAsync(int id)
         {
-                var billItem = await GetByIdAsync(id);
-                if (billItem is not null)
+              var billItem = await GetByIdAsync(id);
+            if (billItem is not null)
+            {
+                if (billItem.Quantity == 0)
+                    return await _operationHelper.DeleteAsync(billItem);
+                else
                 {
-                    if (billItem.Quantity == 0)
-                        return await _operationHelper.DeleteAsync(billItem);
+                    bool isOk = false;
+
+                    if (await _operationHelper.GetAny<Bill>(x => x.BillId == billItem.BillId).Select(x => x.IsBuy).FirstOrDefaultAsync())
+                        isOk = await ItemQauntityRepo.MinusQuantityAsync(billItem.ItemQuantityId, billItem.Quantity);
                     else
-                    {
-                        bool isOk = await ItemQauntityRepo.PlusQuantityAsync(billItem.ItemQuantityId, billItem.Quantity);
-                        if (isOk)
-                            return await _operationHelper.DeleteAsync(billItem);
-                    }
+                        isOk = await ItemQauntityRepo.PlusQuantityAsync(billItem.ItemQuantityId, billItem.Quantity);
+                    if (isOk)
+                        return await _operationHelper.DeleteAsync(billItem);
                 }
+            }
             return false;
         }
         /// <summary>

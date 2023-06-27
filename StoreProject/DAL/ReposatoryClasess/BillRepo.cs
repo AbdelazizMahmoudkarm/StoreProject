@@ -114,8 +114,8 @@ namespace StoreProject.DAL
         public override async Task<bool> DeleteEntityAsync(int id)
         {
             var storedbill = await GetAsQueryable(x => x.BillId == id).Include(x=>x.BillItems).FirstOrDefaultAsync();
-            foreach (var billItemid in storedbill.BillItems.Select(x=>x.BillItemId))
-                await BillItemRepo.RetriveDatatoItemQuantityAsync(billItemid);
+                foreach (var billItemid in storedbill.BillItems.Select(x => x.BillItemId))
+                    await BillItemRepo.RetriveDatatoItemQuantityAsync(billItemid,storedbill.IsBuy);
             if (GetAsQueryable(x => x.CustomerId == storedbill.CustomerId).Count() == 1)
               return  await CustomerRepo.DeleteEntityAsync(storedbill.CustomerId);
             return await _operationHelper.DeleteAsync(storedbill);
@@ -139,7 +139,7 @@ namespace StoreProject.DAL
         }
 
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/SearchBills/*'/>
-        public override IEnumerable<object> SearchBills(Expression<Func<Bill, bool>> filter)
+        public  IEnumerable<object> SearchBills(Expression<Func<Bill, bool>> filter)
         {
             var bills = CheckNull(filter).Include(x => x.Customer).ToList();
             if (bills is not null)
@@ -159,10 +159,10 @@ namespace StoreProject.DAL
         }
 
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/GetStores/*'/>
-        public override List<Store> GetStores(Expression<Func<Store, bool>> filter) => CheckNull(filter).ToList();
+        public  List<Store> GetStores(Expression<Func<Store, bool>> filter) => CheckNull(filter).ToList();
 
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/ColorFilter/*'/>
-        public override IEnumerable<object> ColorFilter(Expression<Func<Item, bool>> filter = null, bool isbuy = false)
+        public  IEnumerable<object> ColorFilter(Expression<Func<Item, bool>> filter = null, bool isbuy = false)
         {
             if (isbuy)
             {
@@ -194,7 +194,7 @@ namespace StoreProject.DAL
             yield break;
         }
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/GetItemQuantityFromItem/*'/>
-        public override ItemQuantity GetItemQuantityFromItem(Expression<Func<Item, bool>> filter = default, bool isbuy = false)
+        public  ItemQuantity GetItemQuantityFromItem(Expression<Func<Item, bool>> filter = default, bool isbuy = false)
         {
             var item = CheckNull(filter).FirstOrDefault();
             if (item is null)
@@ -205,7 +205,7 @@ namespace StoreProject.DAL
         }
 
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/GetBillWithBillItemsWithItemAndColorAndMeasure/*'/>
-        public override Bill GetBillWithBillItemsWithItemAndColorAndMeasure(Expression<Func<Bill, bool>> bill_filter, Func<BillItem, bool> billItem_filter = default)
+        public Bill GetBillWithBillItemsWithItemAndColorAndMeasure(Expression<Func<Bill, bool>> bill_filter, Func<BillItem, bool> billItem_filter = default)
         {
             var bill = CheckNull(bill_filter).Include(x => x.Customer).Include(x => x.Payments).FirstOrDefault();
             if (bill is not null)
@@ -219,7 +219,6 @@ namespace StoreProject.DAL
             else
                 return default;
         }
-
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/DeleteAllBillContentWithoutRetreiveDataToStore/*'/>
         public override async Task<bool> DeleteAllBillContentWithoutRetreiveDataToStore(int id)
             =>await _operationHelper.DeleteAsync(await CheckNull<Bill>(x => x.BillId == id).FirstOrDefaultAsync());

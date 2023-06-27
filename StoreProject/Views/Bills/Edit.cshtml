@@ -429,11 +429,9 @@
                 data: { name: $("#eproductName").val() },
                 success: function (data) {
                     getMeasuresForchoiceeItem();
-                   // alert(JSON.stringify(data, null, 2));
+                    GetStore();
                     if (data != null) {
                         $("#productId").val(data.categoryId);
-                        GetStore();
-                        // $("#productName").val(data.categoryName);
                         getMeasuresForchoiceeItem(data.categoryId);
                     }
                 },

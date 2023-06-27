@@ -28,7 +28,7 @@ namespace StoreProject.Models
         [Display(Name ="التاريخ")]
         public DateTime CreationDateTime { set; get; }
         [NotMapped]
-        [Display(Name ="ارجاع البيانات للمخزن")]
+        [Display(Name ="ارجاع البيانات للمخزن او ازالتها اذا كانت فاتورة شراء")]
         public bool ReturnBillItemToStore { get; set; }
         [NotMapped]
         [Display(Name ="مدين")]
