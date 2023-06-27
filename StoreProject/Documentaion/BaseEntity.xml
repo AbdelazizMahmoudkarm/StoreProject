@@ -7,36 +7,6 @@
 			</summary>
 			 <typeparam name="T"> Type of entity of inherited class</typeparam>
 		</BaseEntity>
-		<BillItemRepo>
-			 <summary>
-				 Get details of bills it defined in billRepo	
-			</summary>
-		</BillItemRepo>
-		<CustomerRepo>
-			<summary>
-				 Get customer data it defined in billrepo	
-			</summary>
-		</CustomerRepo>
-		<PaymentRepo>
-			<summary>
-				 Get the pay data  it defined in bill repo
-			</summary>
-		</PaymentRepo>
-		<CateroryRepo>
-			 <summary>
-				 Get the item data which represent the store it defined in bill repo	
-			</summary>
-		</CateroryRepo>
-		<ItemRepo>
-			 <summary>
-				 Get the details of category it represent a essential spart of store it define in categoury repo	
-			</summary>
-		</ItemRepo>
-		<StoreRepo>
-			 <summary>
-				 Get the stote data which category stored in	
-			</summary>
-		</StoreRepo>
 		<BaseEntityctor>
 			 <summary>
 				 Constractor which take object of operationalhelper to manipulate data	
