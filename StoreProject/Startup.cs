@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StoreProject.Models;
 using StoreProject.DAL.ReposatoryClasess;
-using StoreProject.Controllers;
 
 namespace StoreProject
 {
@@ -43,9 +41,6 @@ namespace StoreProject
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 option.Filters.Add(new AuthorizeFilter(policy));
             });
-           
-           
-       
             services.AddScoped<BillRepo>();
             services.AddScoped<CustomerRepo>();
             services.AddScoped<BillItemRepo>();

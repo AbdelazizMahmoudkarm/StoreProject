@@ -20,9 +20,12 @@
     </dl>
     <form asp-action="Delete">
         <input type="hidden" asp-for="BillId" />
-        <label>  @Html.DisplayNameFor(model => model.ReturnBillItemToStore) </label>
-        <input type="checkbox" asp-for="ReturnBillItemToStore" />
-        <input type="submit" value="حذف" class="btn btn-danger"/>
+            @if (!Model.IsBuy)
+            {
+                <label>@Html.DisplayNameFor(model => model.ReturnBillItemToStore) </label>
+                <input type="checkbox" asp-for="ReturnBillItemToStore" />
+                <input type="submit" value="حذف" class="btn btn-danger"/>
+            }
     </form>
 </div>
 }
