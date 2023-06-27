@@ -1,5 +1,5 @@
 ﻿var create_get = function (url) {
-  //  $("#content").empty();
+    $("#content").empty();
     $("#content").load(url, function () {
         $("#mymodal").modal("show");
     })
@@ -21,7 +21,7 @@ function del(id, name, url) {
 }
 
 var edit_get = function (id, url) {
-   // $("#content").empty();
+    $("#content").empty();
     var url = url + "?id=" + id;
     $("#content").load(url, function () {
         $("#mymodal").modal("show");
