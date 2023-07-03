@@ -77,7 +77,6 @@
                             <tr>
                                 <th colspan="8">
                                     <div class="p">
-                                        @*<span style="font-size:x-large;">مركز تلوين الفتح</span>*@
                                         <div class="just">
                                             <span>
                                             <span id="brand" style=font-size:26px></span>
@@ -98,12 +97,12 @@
                                 </th>
                             </tr>
                             <tr style="background-color:lightgray; text-align:center">
-                                <th colspan="2">رقم المعامله: @Model.BillId </th>
+                                <th colspan="2">رقم البيان: @Model.BillId </th>
                                 <th colspan="2"> <div id="txt" style="text-align:center;"> </div></th>
                                 <th colspan="4">اسم العميل : @Model.Customer.Name </th>
                             </tr>
                             <tr>
-                            <th colspan="4">تاريخ الشراء : @Model.CreationDateTime.ToString("dd/MM/yyyy hh:mm tt")</th>
+                            <th colspan="4">التاريخ : @Model.CreationDateTime.ToString("dd/MM/yyyy hh:mm tt")</th>
                                 <th colspan="4" style="text-align:center">اسم الموظف :@Model.UserName </th>
                             </tr>
                             <tr>
@@ -189,14 +188,14 @@
                         <tfoot>
                                 <tr>
                                     <th colspan="8">
-                                        <strong>سعر الفاتوره قبل الخصم والمرتجع : </strong>@((totalBill+mortagah).ToString("0.00")) جنيه
+                                        <strong>السعر قبل الخصم والمرتجع : </strong>@((totalBill+mortagah).ToString("N",CultureInfo.InvariantCulture)) جنيه
                                     </th>
                                 </tr>
                             <tr style="background-color:lightgray">
                             <th colspan="1"><strong>الخصم:</strong>@discount.ToString("0.00")جنيه</th>
                               <th colspan="1"><strong> المرتجع:</strong><span>@mortagah.ToString("0.00")جنيه</span></th>
                                 <th colspan="4" width="45%">
-                                <strong> سعر الفاتوره بعد الخصم والمرتجع:</strong><span>@((totalBill - discount).ToString("0.00"))جنيه</span>
+                                <strong> السعر بعد الخصم والمرتجع:</strong><span>@((totalBill - discount).ToString("0.00"))جنيه</span>
                             </th>
                                 <th colspan="2" ><strong>المستلم من العميل :</strong>@paid.ToString("0.00")جنيه</th>
                             </tr>
@@ -225,7 +224,7 @@
                                         (تلوين الكمبيوتر لا يرد ولا يستبدل)
                                     </div>
                                     <span id="numbers">
-                                 <img src="~/Img/Screenshot_2021-01-10-11-15-59-06.jpg" width="30" height="30" />
+                                 <img src="~/Img/Whatsapp.jpg" width="30" height="30" />
                                     </span>
                                 
                                 </td>

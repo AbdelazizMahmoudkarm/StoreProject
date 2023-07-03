@@ -38,7 +38,7 @@
                 <tbody>
                     <tr>
                         <td>اسم المشتري : @Model.Customer.Name </td>
-                        <td>رقم المعامله: @Model.BillId </td>
+                        <td>رقم البيان: @Model.BillId </td>
                         <td>  @Model.CreationDateTime.ToString("dd/MM/yyyy hh:mm tt") : تاريخ الشراء  </td>
                         <td>اسم الموظف :@Model.UserName </td>
                     </tr>
@@ -116,7 +116,7 @@
                                 <tr>
                                     <td><strong>  المرتجع : </strong><span>@mortagah.ToString("0.00") جنيه</span></td>
                                     <td class="pull-right" style="margin-right:100px;">
-                                        <strong>اجمالي سعر الفاتوره بعد الخصم  :  </strong>
+                                        <strong>اجمالي السعر بعد الخصم  :  </strong>
                                         <span>@((totalBill + mortagah - discount).ToString("0.00"))</span>
                                     </td>
                                     <td class="pull-right" style="margin-right:100px;"><strong>المستلم من العميل :  </strong>@paid.ToString("0.00")</td>
@@ -128,7 +128,7 @@
                                 <tr>
                                     <td class="pull-right" style="margin-right:100px;"><strong>الرصيد : </strong> @(hasmoney > 0 ? hasmoney.ToString("0.00") : "0.00")</td>
                                     <td class="pull-right" style="margin-right:100px;"><strong>مدين :  </strong> @(dept > 0? dept.ToString("0.00"): "0.00") </td>
-                                    <td colspan="2"><strong>  سعر الفاتوره بعد المرتجع :  </strong><span>@((totalBill - discount).ToString("0.00"))</span></td>
+                                    <td colspan="2"><strong>  السعر  بعد المرتجع :  </strong><span>@((totalBill - discount).ToString("0.00"))</span></td>
                                 </tr>
                                 <tr>
                                     <tr><td colspan="4">------------------------------------------------لجميع الفواتير -------------------------------------------------</td></tr>
