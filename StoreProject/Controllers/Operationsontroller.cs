@@ -39,11 +39,6 @@ namespace StoreProject.Models
             }
             return PartialView(itemQuantities);
         }
-        public IActionResult LowCountItems2()
-        {
-            var num = TempData["num"];
-            return View(LowCountItems(num.ToString()));
-        }
         public IActionResult CountItems()
         {
             ///buyprice or ssale price
