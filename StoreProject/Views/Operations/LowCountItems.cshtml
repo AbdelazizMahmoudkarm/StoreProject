@@ -60,16 +60,17 @@
                     </td>
                     }
                     <td style="font-size:large; font-weight:bold;color:red">
-                            <input type="number" class="form-control" value="@item.Quantity.ToString("0.00")" id="quantity_@item.ItemQuantityId" oninput="showbutton()">
+                            <input type="number" class="form-control" value="@item.Quantity.ToString("0.00")" id="quantity_@item.ItemQuantityId" oninput="showbutton(@item.ItemQuantityId)">
                     </td>
                         <td style="font-size:large; font-weight:bold;color:red">
-                            <input type="number" class="form-control" value="@item.BuyPrice.ToString("0.00")" id="buyprice_@item.ItemQuantityId" oninput="showbutton()">
+                            <input type="number" class="form-control" value="@item.BuyPrice.ToString("0.00")" id="buyprice_@item.ItemQuantityId" oninput="showbutton(@item.ItemQuantityId)">
                         </td>
                         <td style="font-size:large; font-weight:bold;color:red">
-                            <input type="number" class="form-control" value="@item.SalePrice.ToString("0.00")" id="saleprice_@item.ItemQuantityId" oninput="showbutton()">
+                            <input type="number" class="form-control" value="@item.SalePrice.ToString("0.00")" id="saleprice_@item.ItemQuantityId" oninput="showbutton(@item.ItemQuantityId)">
                             </td>
-                        <td> 
-                        <input id="button" class="form-control btn btn-success" type="button" onclick="savedata(@item.ItemQuantityId)" hidden value=" حفظ " /></td>
+                        <td>
+                            <input id="button_@item.ItemQuantityId" class="form-control btn btn-success" type="button" onclick="savedata(@item.ItemQuantityId)" hidden value=" حفظ " />
+                        </td>
                 </tr>
                 }
             </tbody>
@@ -78,8 +79,9 @@
 }
 
 <script>
-    function showbutton(){
-        $("#button").attr("hidden",false);
+    function showbutton(itemquantityid) {
+        $("#button_" + itemquantityid).attr("hidden", false);
+        $("#button_" + itemquantityid).show(800);
     }
     function savedata(itemquantityid){
         var ItemQuantity=new Object();
@@ -92,11 +94,9 @@
             url: "/Operations/ChangeItemQuantity",
             type: "POST",
              data: { itemquantity: ItemQuantity },
-             success: function (data) {
-                    if(data){
-                        $("#button").css("background-color", "#ff6347").fadeOut(800, function () {
-                            $(this).remove();
-                        });
+             success: function (isok) {
+                    if(isok){
+                    $("#button_" + itemquantityid).css("background-color", "#ff6347").hide(800);
                     }
                     else{
                         alert("حدث خطا");
@@ -105,6 +105,5 @@
                 alert("حدث خطا");
             }
         });
-        //alert(itemquantityid);
     }
 </script>
