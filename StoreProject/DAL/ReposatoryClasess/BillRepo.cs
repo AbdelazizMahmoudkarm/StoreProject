@@ -75,7 +75,6 @@ namespace StoreProject.DAL
                    {
                        BillId = entity.BillId,
                        Pay = entity.Pay,
-                       Date = DateTimeNow(),
                    });
                 }   
             }
@@ -100,11 +99,11 @@ namespace StoreProject.DAL
                     await CustomerRepo.UpdateEntityAsync(entity.Customer);
                 if (entity.Pay != 0)
                 {
-                    await _operationHelper.InsertIntoDbAsync(await PaymentRepo.AddEntityAsync(new Payment()
+                    await PaymentRepo.AddEntityAsync(new Payment()
                     {
                         BillId = entity.BillId,
                         Pay = entity.Pay
-                    }));
+                    });
                 }
                 await _operationHelper.UpdateDbAsync(storeBill);
                 
