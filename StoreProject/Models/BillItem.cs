@@ -22,7 +22,7 @@ namespace StoreProject.Models
         public int MeasureId { get; set; }
         [NotMapped]
         public int ColorId { get; set; }
-        public ItemQuantity ItemQantity { get; set; }
+        public virtual ItemQuantity ItemQantity { get; set; }
         [Display(Name =  " الكميه المرتجعه")]
         public double DiscardQuantity { set; get; }
         [Display(Name ="السعر")]

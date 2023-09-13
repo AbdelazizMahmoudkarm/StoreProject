@@ -17,8 +17,8 @@ namespace StoreProject.Models
         [Display(Name = "المخزن")]
         public int StoreId { get; set; }
         [Display(Name = "المخزن")]
-        public Store Store { get; set; }
+        public virtual Store Store { get; set; }
         public bool IsDelete { set; get; }
-        public List<Item> Items { get; set; }
+        public virtual List<Item> Items { get; set; }
     }
 }

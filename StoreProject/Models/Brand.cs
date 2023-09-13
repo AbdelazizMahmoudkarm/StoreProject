@@ -15,7 +15,7 @@ namespace StoreProject.Models
         public string  First_PhoneNumer { get; set; }
         public string Second_PhoneNumber { get; set; }
         public string Company { get; set; }
-        public List<BrandImage> BrandImages { get; set; }
+        public virtual List<BrandImage> BrandImages { get; set; }
 
     }
 }

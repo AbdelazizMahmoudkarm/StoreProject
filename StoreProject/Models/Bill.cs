@@ -12,7 +12,7 @@ namespace StoreProject.Models
         public int BillId { set; get; }
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public virtual Customer Customer { get; set; }
        
         [Display(Name ="نوع الفاتوره")]
         public  bool IsBuy { get; set; }
@@ -21,8 +21,8 @@ namespace StoreProject.Models
         [Required(AllowEmptyStrings =true)]
         [Display(Name = " اسم المستخدم ")]
         public String UserName { get; set; }
-        public List<BillItem> BillItems { set; get; }
-        public List<Payment> Payments { get; set; }
+        public virtual List<BillItem> BillItems { set; get; }
+        public virtual List<Payment> Payments { get; set; }
         [Display(Name ="المدفوع")]
         public double Pay { get; set; }
         [Display(Name ="التاريخ")]

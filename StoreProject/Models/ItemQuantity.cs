@@ -8,7 +8,7 @@ namespace StoreProject.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ItemQuantityId { get; set; }
         public int ItemId { get; set; }
-        public Item Item { set; get; }
+        public virtual Item Item { set; get; }
         [Display(Name = "الكميه")]
         public double Quantity { get; set; }
         [Display(Name = "سعر البيع")]

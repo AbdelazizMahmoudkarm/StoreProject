@@ -12,12 +12,12 @@ namespace StoreProject.Models
         public int MeasureId { get; set; }
         [ForeignKey("Item")]
         public int CategoryId { get; set; }
-        public Category Category { set; get; }
-        public Measure Measure { get; set; }
+        public virtual Category Category { set; get; }
+        public virtual Measure Measure { get; set; }
         [ForeignKey("Color")]
         public int ColorId { get; set; }
         public Color Color { get; set; }
         public bool IsDelete { set; get; }
-        public List<ItemQuantity> ItemQuantities { set; get; }
+        public virtual List<ItemQuantity> ItemQuantities { set; get; }
     }
 }
