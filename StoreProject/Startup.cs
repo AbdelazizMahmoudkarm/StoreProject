@@ -54,6 +54,7 @@ namespace StoreProject
             services.AddScoped<BrandRepo>();
             services.AddScoped<BrandImageRepo>();
             services.AddScoped<OperationHelper>();
+            services.AddScoped<ExpenseRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

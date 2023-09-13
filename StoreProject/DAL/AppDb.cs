@@ -26,10 +26,10 @@ namespace StoreProject.DAL
             builder.Entity<Payment>().HasKey(c => new { c.PaymentId});
             builder.Entity<Item>().HasKey(c => new {c.ItemId});
             builder.Entity<Color>().HasKey(c => new { c.ColorId });
-            builder.Entity<Masroufat>().HasKey(c => new { c.Id });
+            builder.Entity<Expense>().HasKey(c => new { c.Id });
             builder.Entity<Brand>().HasKey(c => new { c.BrandId});
             builder.Entity<BrandImage>().HasKey(c => new { c.Id });
-
+            builder.Entity<Expense>().HasKey(c => new { c.Id });
             builder.Entity<ItemQuantity>().HasKey(c => new { c.ItemQuantityId });
 
             builder.Entity<Item>().HasMany(e => e.ItemQuantities)
@@ -42,51 +42,55 @@ namespace StoreProject.DAL
         /// <summary>
         /// Use to deal with all things about buy or sale
         /// </summary>
-        public DbSet<Bill> Bills { set; get; }
+        public virtual DbSet<Bill> Bills { set; get; }
         /// <summary>
         /// Define the customer detail
         /// </summary>
-        public DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
         /// <summary>
         ///  Represent the data in the store
         /// </summary>
-        public DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
         /// <summary>
         /// Deatils of catrgory which define the measure, color and quantity
         /// </summary>
-        public DbSet<Measure> Measures { get; set; }
+        public virtual DbSet<Measure> Measures { get; set; }
         /// <summary>
         /// Represnt the store of program
         /// </summary>
-        public DbSet<Store>Stores { get; set; }
+        public virtual DbSet<Store>Stores { get; set; }
         /// <summary>
         /// Use to insert, retrive, update and delete the bill details 
         /// </summary>
-        public DbSet<BillItem> BillItems { get; set; }
+        public virtual DbSet<BillItem> BillItems { get; set; }
         /// <summary>
         /// Deatils of catrgory which define the measure, color and quantity
         /// </summary>
-        public DbSet<Item> Items { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
         /// <summary>
         ///  Customer payment details
         /// </summary>
-        public DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
         /// <summary>
         ///  define the color of program
         /// </summary>
-        public DbSet<Color> Colors { get; set; }
+        public virtual DbSet<Color> Colors { get; set; }
         //public DbSet<Masroufat> Masroufats { get; set; }
         /// <summary>
         /// Has some information about the store which use this prgram
         /// </summary>
-        public DbSet<Brand> Brands { get; set; }
+        public virtual DbSet<Brand> Brands { get; set; }
         /// <summary>
         /// Use to manipulate date which use to define the store it self
         /// </summary>
-        public DbSet<BrandImage> BrandImages{ get; set; }
+        public virtual DbSet<BrandImage> BrandImages{ get; set; }
         /// <summary>
         /// Represent the item details which has price and quantity
         /// </summary>
-        public DbSet<ItemQuantity> ItemQantities { set; get; }
+        public virtual DbSet<ItemQuantity> ItemQantities { set; get; }
+        /// <summary>
+        ///  Represent the money which spends in store work
+        /// </summary>
+        public virtual DbSet<Expense>Expenses { set; get; }
     }
 }

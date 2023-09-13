@@ -7,7 +7,7 @@ namespace StoreProject.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ColorId { get; set; }
-        [Display(Name = "اسم اللون")]
+        [Display(Name = "اللون")]
         public string ColorName { get; set; }
         public bool IsDelete { get; set; }
     }

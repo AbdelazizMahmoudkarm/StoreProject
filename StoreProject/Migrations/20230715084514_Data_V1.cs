@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StoreProject.Migrations
 {
-    public partial class data_v1 : Migration
+    public partial class Data_V1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -94,18 +94,18 @@ namespace StoreProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Masroufats",
+                name: "Expenses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Buy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    pay = table.Column<double>(type: "float", nullable: false),
+                    Element = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Pay = table.Column<double>(type: "float", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Masroufats", x => x.Id);
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -523,7 +523,7 @@ namespace StoreProject.Migrations
                 name: "BrandImages");
 
             migrationBuilder.DropTable(
-                name: "Masroufats");
+                name: "Expenses");
 
             migrationBuilder.DropTable(
                 name: "Payments");

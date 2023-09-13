@@ -18,30 +18,8 @@ namespace StoreProject.Controllers
             var model = _storeRepo.GetAsQueryable(x=>x.IsDelete==false);
             return View(await PaginatedList<Store>.CreateAsync(model,index??1,9));
         }
-
-        // GET: Stores/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var store = await _storeRepo.GetAsQueryable()
-                .FirstOrDefaultAsync(m => m.StoreId == id);
-            if (store == null)
-            {
-                return NotFound();
-            }
-
-            return View(store);
-        }
-
         // GET: Stores/Create
-        public IActionResult Create()
-        {
-            return PartialView();
-        }
+        public IActionResult Create() => PartialView();
 
         // POST: Stores/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
@@ -63,17 +41,12 @@ namespace StoreProject.Controllers
         {
             if (id == 0)
                 return NotFound();
-            
-
             var store = await _storeRepo.GetByIdAsync(id);
             if (store == null)
                 return NotFound();
             return PartialView(store);
         }
 
-        // POST: Stores/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
        // [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit( [Bind("StoreId,StoreName")] Store store)

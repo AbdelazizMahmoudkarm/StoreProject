@@ -1,0 +1,88 @@
+﻿@model PaginatedList<Expense>
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body{
+        font-size:large;
+    }
+    .body {
+       margin:10px;
+    }
+</style>
+<script src="~/js/Java_methods.js"></script>
+<br />
+<div class="row">
+    <div class="col-md-8">
+        حسابات
+    </div>
+    <div>
+        <a class="btn btn-success" onclick="create_get('/Expenses/StoreMoney')">اجمالي الموجود <span class="fa fa-plus"></span></a>
+
+</div>
+    <div class="col-md-4">
+        <a class="btn btn-success" onclick="create_get('/Expenses/Create')">انشاء عنصر <span class="fa fa-plus"></span></a>
+    </div>
+</div>
+<div class="body">
+    <table class="table table-striped">
+        <thead style="background-color:#1d1985;">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Element)
+                </th>
+                <th>المدفوع</th>
+                <th>تاريخ الدفع</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="row_@item.Id">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Element)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" onclick="edit_get(@item.Id,'/Expenses/Edit')">
+                            <span class="fa fa-edit"></span>
+                        </a>
+                        <a class="btn btn-danger" onclick="del(@item.Id,'@item.Element','/Expenses/Delete')">
+                            <span class="fa fa-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div style="position:absolute;bottom:60px;">
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-success @prevDisabled">
+
+        <span class="fa fa-backward"></span>
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-success @nextDisabled">
+        <span class="fa fa-forward"></span>
+    </a>
+</div>
+<script>
+    document.onloadedmetadata = create_get('/Expenses/StoreMoney');
+</script>

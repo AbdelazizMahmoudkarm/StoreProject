@@ -206,5 +206,20 @@ namespace StoreProject.DAL
         }
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/DateTimeNow/*'/>
         public DateTime DateTimeNow() => DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd hh:mm"));
+
+        public double GetTotalMoneyForStore()
+        {
+            var payments = _operationHelper.GetAnyWithoutCondition<Payment>().ToList();
+            double paied = 0;
+            foreach(var payment in payments)
+            {
+                int exist=_operationHelper.GetAny<Bill>(x=>x.BillId==payment.BillId&&!x.IsBuy).Count();
+                if (exist > 0)
+                    paied += payment.Pay;
+                else
+                    paied -= payment.Pay;
+            }
+            return paied;
+        }
     }
 }

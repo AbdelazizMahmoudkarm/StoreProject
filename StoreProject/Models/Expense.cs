@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StoreProject.Models
 {
-    public class Masroufat
+    public class Expense
     {
         public int Id { get; set; }
         [Display(Name ="العنصر")][Required]
-        public string Buy { get; set; }
+        public string Element { get; set; }
         [Display(Name = "المبلغ")][Required]
-        public double pay { get; set; }
+        public double Pay { get; set; }
         [Display(Name = "التاريخ")]
         public DateTime Date { get; set; }
     }

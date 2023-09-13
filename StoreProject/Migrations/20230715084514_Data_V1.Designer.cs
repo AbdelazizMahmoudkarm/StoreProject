@@ -12,8 +12,8 @@ using StoreProject.DAL;
 namespace StoreProject.Migrations
 {
     [DbContext(typeof(AppDb))]
-    [Migration("20230620125806_data_v1")]
-    partial class data_v1
+    [Migration("20230715084514_Data_V1")]
+    partial class Data_V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -396,6 +396,29 @@ namespace StoreProject.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("StoreProject.Models.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Element")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Pay")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Expenses");
+                });
+
             modelBuilder.Entity("StoreProject.Models.Item", b =>
                 {
                     b.Property<int>("ItemId")
@@ -452,29 +475,6 @@ namespace StoreProject.Migrations
                     b.HasIndex("ItemId");
 
                     b.ToTable("ItemQantities");
-                });
-
-            modelBuilder.Entity("StoreProject.Models.Masroufat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Buy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("pay")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Masroufats");
                 });
 
             modelBuilder.Entity("StoreProject.Models.Measure", b =>

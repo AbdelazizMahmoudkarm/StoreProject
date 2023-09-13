@@ -1,0 +1,39 @@
+﻿@model Expense
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+<h4>تعديل مخزن</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form id="create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Element" class="control-label"></label>
+                <input asp-for="Element" class="form-control" />
+                <span asp-validation-for="Element" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pay" class="control-label"></label>
+                <input asp-for="Pay" class="form-control" />
+                <span asp-validation-for="Pay" class="text-danger"></span>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-danger" data-dismiss="modal">الغاء</a>
+                <a href="#" class="btn btn-success" onclick="post('/Stores/Edit','/Expenses/Index')">تعديل</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

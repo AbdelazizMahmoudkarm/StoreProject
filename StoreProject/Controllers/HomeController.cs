@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using StoreProject.DAL;
 using StoreProject.DAL.ReposatoryClasess;
 using StoreProject.Models;
 
@@ -9,13 +8,9 @@ namespace StoreProject.Controllers
 {
     public class HomeController : Controller
     {
-        //  private readonly ILogger<HomeController> _logger;
         private readonly BrandRepo _brandRepo;
+        public HomeController(BrandRepo brandRepo) => _brandRepo = brandRepo;
 
-        public HomeController(BrandRepo brandRepo)
-        {
-            _brandRepo = brandRepo;
-        }
         [HttpPost][Produces("application/json")]
         public IActionResult Brand()
         {
@@ -47,10 +42,5 @@ namespace StoreProject.Controllers
             else
                 return Ok();
         }
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }
