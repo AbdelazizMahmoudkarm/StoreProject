@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using StoreProject.DAL.ReposatoryClasess;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace StoreProject.DAL
 {
@@ -199,8 +200,9 @@ namespace StoreProject.DAL
             if (item is null)
                 return default;
             if (isbuy)
-                return GetItemQuantity(x => x.ItemId == item.ItemId).FirstOrDefault();
-            return GetItemQuantity(x => x.ItemId == item.ItemId && x.Quantity > 0).FirstOrDefault();
+               return GetItemQuantity(x => x.ItemId == item.ItemId).MaxBy(x=>x.Quantity);
+            
+            return GetItemQuantity(x => x.ItemId == item.ItemId && x.Quantity > 0).MaxBy(x=>x.Quantity);
         }
 
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/GetBillWithBillItemsWithItemAndColorAndMeasure/*'/>

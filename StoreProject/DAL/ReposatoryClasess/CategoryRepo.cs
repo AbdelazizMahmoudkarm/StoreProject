@@ -47,7 +47,7 @@ namespace StoreProject.DAL.ReposatoryClasess
         /// <returns>Object which inserted to database</returns>
         public override async Task<Category> AddEntityAsync(Category entity)
         {
-            var category = GetAsQueryable(x => x.CategoryName == entity.CategoryName.Trim().ToUpper()).FirstOrDefault();
+            var category = GetAsQueryable(x => x.CategoryName == entity.CategoryName.Trim().ToUpper()&&!x.IsDelete).FirstOrDefault();
             if (category is not null)
             {
                 if (entity.Items.Count > 0)

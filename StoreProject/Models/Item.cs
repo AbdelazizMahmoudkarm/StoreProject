@@ -16,7 +16,7 @@ namespace StoreProject.Models
         public virtual Measure Measure { get; set; }
         [ForeignKey("Color")]
         public int ColorId { get; set; }
-        public Color Color { get; set; }
+        public virtual Color Color { get; set; }
         public bool IsDelete { set; get; }
         public virtual List<ItemQuantity> ItemQuantities { set; get; }
     }

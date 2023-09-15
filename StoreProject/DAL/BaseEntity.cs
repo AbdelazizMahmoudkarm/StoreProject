@@ -165,7 +165,6 @@ namespace StoreProject.DAL
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/GetItemQuantity/*'/>
         public IEnumerable<ItemQuantity> GetItemQuantity(Expression<Func<ItemQuantity, bool>> filter)
         {
-            
             var itemquantity = CheckNull(filter).Select(x => new
             {
                 x.ItemQuantityId,
@@ -177,15 +176,15 @@ namespace StoreProject.DAL
             }).ToList();
             foreach (var item in itemquantity)
             {
-                yield return new ItemQuantity
-                {
-                    ItemQuantityId = item.ItemQuantityId,
-                    ItemId = item.ItemId,
-                    Quantity = item.Quantity,
-                    IsDelete = item.IsDelete,
-                    SalePrice = item.SalePrice,
-                    BuyPrice = item.BuyPrice,
-                };
+                    yield return new ItemQuantity
+                    {
+                        ItemQuantityId = item.ItemQuantityId,
+                        ItemId = item.ItemId,
+                        Quantity = item.Quantity,
+                        IsDelete = item.IsDelete,
+                        SalePrice = item.SalePrice,
+                        BuyPrice = item.BuyPrice,
+                    };
             }
             yield break;
         }
