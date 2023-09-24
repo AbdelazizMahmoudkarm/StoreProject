@@ -10,7 +10,7 @@ using System.Net;
 namespace StoreProject.Controllers
 {
     /// <summary>
-    /// For authotcation
+    /// For authentication
     /// </summary>
     public class AccountController : Controller
     {
