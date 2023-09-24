@@ -36,19 +36,19 @@
         }
         th, td {
             border: 1px solid black;
-            font-size: 22px
+            font-size: 20px
         }
       /*  .rotate {
             -webkit-transform: rotate(-90deg);   
         }*/
 
-        @@page {
+        /*@@page {
             size: A3 portrait;
             margin-top: 5mm;
             margin-bottom: 136mm;
             margin-right: 46mm;
             margin-left: 48mm;
-        }
+        }*/
         /*  table thead::before {
                 counter-increment: page;
                 counter-reset: page 1;
@@ -97,9 +97,9 @@
                                 </th>
                             </tr>
                             <tr style="background-color:lightgray; text-align:center">
-                                <th colspan="2">رقم البيان: @Model.BillId </th>
-                                <th colspan="2"> <div id="txt" style="text-align:center;"> </div></th>
-                                <th colspan="4">اسم العميل : @Model.Customer.Name </th>
+                            <th colspan="2" >رقم البيان: @Model.BillId </th>
+                                <th colspan="3" > <div id="txt" style="text-align:center;"> </div></th>
+                                <th colspan="3">اسم العميل : @Model.Customer.Name </th>
                             </tr>
                             <tr>
                             <th colspan="4">التاريخ : @Model.CreationDateTime.ToString("dd/MM/yyyy hh:mm tt")</th>
@@ -124,7 +124,7 @@
                             {
                                 index++;
                                 <tr>
-                                    <td>@index</td>
+                                    <td width="5%">@index</td>
                                     <td width="30%">@billItem.ItemName</td>
                                     <td>@billItem.ItemQantity.Item.Measure.MeasureName</td>
                                     @if (billItem.ItemQantity.Item.Color.ColorName == "عادي")
@@ -153,7 +153,8 @@
                                 totalBill = totalBill + Bill;
                             }
                         }
-                            @if (discards.Count() != 0)
+
+                         @if (discards.Count() != 0)
                         {
                             <tr style="background-color:lightgray"> <td colspan="8" style="text-align:center"> المرتجع</td></tr>
                             @foreach (var discarded in discards)
@@ -187,18 +188,32 @@
                         </tbody>
                         <tfoot>
                                 <tr>
-                                    <th colspan="8">
+                                    <th colspan="4">
                                         <strong>السعر قبل الخصم والمرتجع : </strong>@((totalBill+mortagah).ToString("N",CultureInfo.InvariantCulture)) جنيه
                                     </th>
-                                </tr>
-                            <tr style="background-color:lightgray">
-                            <th colspan="1"><strong>الخصم:</strong>@discount.ToString("0.00")جنيه</th>
-                              <th colspan="1"><strong> المرتجع:</strong><span>@mortagah.ToString("0.00")جنيه</span></th>
-                                <th colspan="4" width="45%">
+                            <th colspan="4">
                                 <strong> السعر بعد الخصم والمرتجع:</strong><span>@((totalBill - discount).ToString("0.00"))جنيه</span>
                             </th>
-                                <th colspan="2" ><strong>المستلم من العميل :</strong>@paid.ToString("0.00")جنيه</th>
+                                </tr>
+                        @if (discount != 0 && mortagah != 0)
+                        {
+                            <tr style="background-color:lightgray">
+                              <th colspan="4"><strong>الخصم:</strong>@discount.ToString("0.00")جنيه</th>
+                              <th colspan="4"><strong> المرتجع:</strong><span>@mortagah.ToString("0.00")جنيه</span></th>
                             </tr>
+                        }else if (discount != 0 || mortagah != 0)
+                        {
+                            if (discount == 0)
+                            { <tr style="background-color:lightgray">
+                               <th colspan="8"><strong> المرتجع:</strong><span>@mortagah.ToString("0.00")جنيه</span></th>
+                              </tr>
+                            }else if (mortagah == 0)
+                            {
+                            <tr style="background-color:lightgray">
+                              <th colspan="8"><strong>الخصم:</strong>@discount.ToString("0.00")جنيه</th>
+                            </tr>
+                            }   
+                        }
                         @{
                             double hasmoney = paid - totalBill + discount;
                             double dept = totalBill - paid - discount;
@@ -230,11 +245,11 @@
                                 </td>
                             </tr>
                         </tfoot>
-                 
-                            <tr style="background-color:lightgray">
-                                <th colspan="4">المدفوع</th>
-                                <th colspan="4">تاريخ الدفع</th>
-                            </tr>
+
+                    <tr style="background-color:lightgray">
+                        <th colspan="4">المدفوع</th>
+                        <th colspan="4">تاريخ الدفع</th>
+                    </tr>
                     @if (ViewBag.PaymentList.Count != 0)
                     {
                         @foreach (var item in ViewBag.paymentList)
@@ -244,6 +259,7 @@
                                 <td colspan="4">@item.Date.ToString("dd/MM/yyyy hh:mm tt")</td>
                             </tr>
                         }
+                        <tr> <td colspan="8"><strong>المستلم من العميل :</strong>@paid.ToString("0.00")جنيه</td></tr>
                     }else
                     {
                         <tr><td colspan="8">لا يوجد </td></tr>

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StoreProject.DAL;
-using StoreProject.Models;
 using System.Linq;
 using System.Threading.Tasks;
 

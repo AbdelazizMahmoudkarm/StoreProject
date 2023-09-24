@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using StoreProject.DAL;
 using StoreProject.DAL.ReposatoryClasess;
 using StoreProject.Models;
@@ -109,7 +107,6 @@ namespace StoreProject.Controllers
                 TempData["isbuy"] = isbuy;
                 ViewBag.isbuy = isbuy;
                 return View(await PaginatedList<Bill>.CreateAsync(bills, pageNumber ?? 1, 9));
-            
         }
         public IActionResult Newbill()
         {

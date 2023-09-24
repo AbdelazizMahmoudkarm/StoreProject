@@ -52,18 +52,15 @@ namespace StoreProject.Models
            var isok2= DateTime.TryParse(date2,out DateTime toDateTime);
             if (isok1 && isok2)
             {
-                var bills = _billRepo.GetAsQueryable(x => x.CreationDateTime >= formDateTime && x.CreationDateTime <= toDateTime && !x.IsBuy).Include(x => x.Customer).ToList();
-                bills.ForEach(b => b.BillItems = _billRepo.BillItemRepo.GetAsQueryable(i => i.BillId == b.BillId).ToList());
-                bills.ForEach(b => b.Payments = _billRepo.PaymentRepo.GetAsQueryable(p => p.BillId == b.BillId).ToList());
-                bills.ForEach(b => b.BillItems.ForEach(x => x.ItemQantity = _billRepo.GetItemQuantity(i => i.ItemQuantityId == x.ItemQuantityId).FirstOrDefault()));
+                var bills = _billRepo.ProfitBills(y => y.CreationDateTime >= formDateTime && y.CreationDateTime <= toDateTime && !y.IsBuy);
                 return PartialView(bills);
             }
             return PartialView();
         }
-        public async Task<IActionResult> Findbill(int id)
+        public IActionResult Findbill(int id)
         {
-            var bill= _billRepo.ProfitBill(id);
-            bill.Pay =await  _billRepo.PaidAsync(x=>x.BillId == id);
+            var bill= _billRepo.ProfitBills(x=>x.BillId==id&&!x.IsBuy).FirstOrDefault();
+            bill.Pay = bill.Payments.Sum(x => x.Pay);
             ViewBag.totalearn = bill.BillItems.Sum(b=>b.SalePrice*b.Quantity - (b.ItemQantity.BuyPrice*b.Quantity))- bill.Discount;
             return PartialView(bill);
         }

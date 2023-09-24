@@ -1,3 +1,4 @@
+global using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

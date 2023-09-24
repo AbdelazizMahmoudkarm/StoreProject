@@ -110,12 +110,20 @@ namespace StoreProject.DAL
                 return 0;
         }
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/ProfitBill/*'/>
-        public Bill ProfitBill(int id = 0)
+        public List<Bill> ProfitBills(Expression<Func<Bill,bool>>func)
         {
-            var bill = CheckNull<Bill>(x => x.BillId == id && x.IsBuy == false).Include(x => x.Customer).FirstOrDefault();
-            if (bill is not null)
-                bill.BillItems = GetItemquantityAndItemWithColorAndMesureToBillItem(x=>x.BillId==bill.BillId).ToList();
-            return bill;
+            if (func.Parameters.FirstOrDefault().Name=="x")
+            {
+                List<Bill> billList = new();
+                var bill = CheckNull<Bill>(func).Include(x => x.Customer).Include(x => x.BillItems).Include(x => x.Payments).FirstOrDefault();
+                bill.BillItems.ForEach(x => x.ItemQantity = GetItemQuantity(i => i.ItemQuantityId == x.ItemQuantityId).FirstOrDefault());
+                bill.BillItems.ForEach(x => x.ItemQantity.Item=GetItemWithMeasureAndColor(y=>y.ItemId==x.ItemQantity.ItemId).FirstOrDefault());
+                 billList.Add(bill);
+                return billList;
+            }
+            var bills = CheckNull<Bill>(func).Include(x => x.Customer).Include(x => x.BillItems).Include(x => x.Payments).ToList();
+            bills.ForEach(b => b.BillItems.ForEach(x => x.ItemQantity = GetItemQuantity(i => i.ItemQuantityId == x.ItemQuantityId).FirstOrDefault()));
+            return bills;
         }
         ///<include file='Documentaion/BaseEntity.xml' path='docs/members[@name="baseentity"]/DoubleFormat/*'/>
         public double DoubleFormat(double value) =>

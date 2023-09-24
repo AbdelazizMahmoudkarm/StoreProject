@@ -104,10 +104,10 @@ namespace StoreProject.DAL.ReposatoryClasess
         /// </summary>
         /// <param name="entity"> object of category  to update </param>
         /// <returns>void method</returns>
-        public override async Task UpdateEntityAsync(Category entity)
+        public override async Task<bool> UpdateEntityAsync(Category entity)
         {
             entity.CategoryName = entity.CategoryName.Trim().ToUpper();
-             await _operationHelper.UpdateDbAsync(entity);
+             return await _operationHelper.UpdateDbAsync(entity);
         }
     }
 }

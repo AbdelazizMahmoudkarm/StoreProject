@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using StoreProject.DAL.ReposatoryClasess;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace StoreProject.DAL
 {
@@ -63,12 +62,15 @@ namespace StoreProject.DAL
                 var billItems = entity.BillItems;
                 entity.BillItems = default;
                 await _operationHelper.InsertIntoDbAsync(entity);
-                if (billItems.Count > 0)
+                if (billItems is not null)
                 {
-                    if (entity.IsBuy)
-                        await BillItemRepo.CreateBuy(billItems, entity.BillId);
-                    else
-                        await BillItemRepo.AddListEntities(billItems, entity.BillId);
+                    if (billItems?.Count > 0)
+                    {
+                        if (entity.IsBuy)
+                            await BillItemRepo.CreateBuy(billItems, entity.BillId);
+                        else
+                            await BillItemRepo.AddListEntities(billItems, entity.BillId);
+                    }
                 }
                 if (entity.Pay != 0)
                 {
@@ -82,20 +84,22 @@ namespace StoreProject.DAL
             return entity;
         }
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/UpdateEntityAsync/*'/>
-        public override async Task UpdateEntityAsync(Bill entity)
+        public override async Task<bool> UpdateEntityAsync(Bill entity)
         {
             var storeBill =await GetAsQueryable(x => x.BillId == entity.BillId).FirstOrDefaultAsync();
             if (storeBill is not null)
             {
                 storeBill.Discount = entity.Discount;
-                if (entity.BillItems.Count > 0)
+                if (entity.BillItems is not null)
                 {
-                    if (entity.IsBuy)
-                        await BillItemRepo.CreateBuy(entity.BillItems, entity.BillId);
-                    else
-                        await BillItemRepo.AddListEntities(entity.BillItems, entity.BillId);
+                    if (entity.BillItems.Count > 0)
+                    {
+                        if (entity.IsBuy)
+                            await BillItemRepo.CreateBuy(entity.BillItems, entity.BillId);
+                        else
+                            await BillItemRepo.AddListEntities(entity.BillItems, entity.BillId);
+                    }
                 }
-
                 if (entity.Customer is not null)
                     await CustomerRepo.UpdateEntityAsync(entity.Customer);
                 if (entity.Pay != 0)
@@ -106,9 +110,9 @@ namespace StoreProject.DAL
                         Pay = entity.Pay
                     });
                 }
-                await _operationHelper.UpdateDbAsync(storeBill);
-                
+              return  await _operationHelper.UpdateDbAsync(storeBill);
             }
+            return false;
         }
         ///<include file='Documentaion/BillRepo.xml' path='docs/members[@name="billRepo"]/DeleteEntityAsync/*'/>
         public override async Task<bool> DeleteEntityAsync(int id)
@@ -116,7 +120,7 @@ namespace StoreProject.DAL
             var storedbill = await GetAsQueryable(x => x.BillId == id).Include(x=>x.BillItems).FirstOrDefaultAsync();
                 foreach (var billItemid in storedbill.BillItems.Select(x => x.BillItemId))
                     await BillItemRepo.RetriveDatatoItemQuantityAsync(billItemid,storedbill.IsBuy);
-            if (GetAsQueryable(x => x.CustomerId == storedbill.CustomerId).Count() == 1)
+            if (GetAsQueryable(x => x.CustomerId == storedbill.CustomerId)?.Count() == 1)
               return  await CustomerRepo.DeleteEntityAsync(storedbill.CustomerId);
             return await _operationHelper.DeleteAsync(storedbill);
         }
@@ -166,8 +170,7 @@ namespace StoreProject.DAL
         {
             if (isbuy)
             {
-                var colors = CheckNull<Color>(x => !x.IsDelete).ToList();
-                foreach (var color in colors)
+                foreach (var color in CheckNull<Color>(x => !x.IsDelete).ToList())
                 {
                     var data = new
                     {

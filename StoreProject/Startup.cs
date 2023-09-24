@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StoreProject.DAL.ReposatoryClasess;
+using System.Text.Json.Serialization;
 
 namespace StoreProject
 {
@@ -35,12 +36,17 @@ namespace StoreProject
                 Action.Password.RequiredUniqueChars = 0;
             }
                 ).AddEntityFrameworkStores<AppDb>();
-          
             services.AddMvc(option =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 option.Filters.Add(new AuthorizeFilter(policy));
             });
+            //To prevent cycle loop referance
+            services.AddControllers()
+          .AddJsonOptions(options =>
+          {
+              options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+          });
             services.AddScoped<BillRepo>();
             services.AddScoped<CustomerRepo>();
             services.AddScoped<BillItemRepo>();

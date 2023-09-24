@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StoreProject.DAL;
 using StoreProject.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net;
 
 namespace StoreProject.Controllers
 {
@@ -22,7 +18,7 @@ namespace StoreProject.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole>_roleManager;
         /// <summary>
-        /// 
+        /// Constractor which intialize the users and logins actions 
         /// </summary>
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
@@ -91,14 +87,11 @@ namespace StoreProject.Controllers
             }
             return View();
         }
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HttpPost,AllowAnonymous]
+         //[ValidateAntiForgeryToken]
         public async  Task<IActionResult> Login(Login login)
         {
-            string  ReturnUrl = null;
-            if (TempData["url"]!=null)
-                ReturnUrl = TempData["url"]?.ToString();
+            string ReturnUrl = TempData["url"]?.ToString();
             if (ModelState.IsValid)
             {
               var result= await _signInManager.PasswordSignInAsync(login.UserName,login.Password,false,false);
