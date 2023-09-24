@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 namespace StoreProject.ApiController
 {
     /// <summary>
-    /// For authotcation
+    /// For authentication
     /// </summary>
     [ApiController]
     [Route("api/[Controller]/[Action]")]
