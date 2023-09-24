@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <docs>
 	<members name="baseentity">
 		<BaseEntity>
@@ -22,9 +22,9 @@
 		</GetAsQueryable>
 		<GetAll>
 			 <summary>
-				 Get specific entity as queryable using filter <paramref name="filter"/> type of expression func which take Type of generic class and return bool.	
+				 Get specific entity as queryable using filter <paramref name="filter"/> type of expression func which take Type of generic class and return boolean.	
 			</summary>
-			 <param name="filter"> expression func which take Type of generic class and return bool</param>
+			 <param name="filter"> expression func which take Type of generic class and return boolean</param>
 			 <returns>An entity as queryable</returns>
 		</GetAll>
 		<GetByIdAsync>
@@ -68,7 +68,7 @@
 				Generate Id for generic entity.	
 			</summary>
 			   <typeparam name="O"> Type of class</typeparam>
-			   <param name="filter"> delegate Func which take generic type of class and return bool</param>
+			   <param name="filter"> delegate Func which take generic type of class and return boolean</param>
 			   <param name="id"> Increment type of int</param>
 			   <returns> New id number </returns>
 		</CreateId>
@@ -77,38 +77,38 @@
 				 Check if the type of expresion delegate <paramref name="filter"/> is null or not
 			</summary>
 			   <typeparam name="O"> Type of class</typeparam>
-			   <param name="filter"> delegate Func which take generic type of class and return bool</param>
+			   <param name="filter"> delegate Func which take generic type of class and return boolean</param>
 			   <returns>Class type as queryable</returns>
 		</CheckNull>
 		<GetListOfItems>
 			 <summary>
 				 Get list lof item with itemqauntity and meadure and color	
 			</summary>
-			   <param name="filter"> expression type of Func which take item and return false</param>
-			   <param name="filter2"> expression type of Func which take itemquantity and return false</param>
+			   <param name="filter"> expression type of Func which take item and boolean</param>
+			   <param name="filter2"> expression type of Func which take itemquantity and return boolean</param>
 			   <returns> list of anonymous object </returns>
 		</GetListOfItems>
 		<PaidAsync>
 			  <summary>
 				    Get sum of  pay for all existying bills   
 			</summary>
-			   <param name="filter"> expression type of Func which take bill and return false</param>
+			   <param name="filter"> expression type of Func which take bill and return boolean</param>
 			   <returns> double as asynchronous</returns>
 		</PaidAsync>
 		<DebitAsync>
 			 <summary>
 				   Get sum of total buy which consider as dept for all existying bills	   
 			</summary>
-			 <param name="filter"> expression type of Func which take bill and return false</param>
+			 <param name="filter"> expression type of Func which take bill and return boolean</param>
 		       <returns> double as asynchronous</returns>
 		</DebitAsync>
-		<ProfitBill>
+		<ProfitBills>
 			  <summary>
 				    Get a specific bill with list of bill items, objetc of  items, itemquantity, color and mesaure   
 			</summary>
-			      <param name="id"> the id of specific bill</param>
+			      <param name="func"> expression type of Func which take bill and return boolean</param>
 			      <returns> object of bill </returns>
-		</ProfitBill>
+		</ProfitBills>
 		<DoubleFormat>
 			 <summary>
 				  Convert any double to double format 0.00	  
@@ -120,7 +120,7 @@
 			 <summary>
 				    Get the subtarct of pay and debit the result is minus then dept else not	   
 			</summary>
-			      <param name="filter"></param>
+			      <param name="filter"> expression type of Func which take bill and return boolean</param>
 			      <returns> double with minus if dept or not </returns>
 		</GetTotalNetAsync>
 		<GetItemquantityAndItemWithColorAndMesureToBillItem>
@@ -148,8 +148,8 @@
 			 <summary>
 				   Get list of  bill, bill item with object of  items, itemquantity, color and mesaure	  
 			</summary>
-			    <param name="bill_filter">expression type of Func which take bill and return false </param>
-			    <param name="billItem_filter"> expression type of Func which take bill item and return false</param>
+			    <param name="bill_filter">expression type of Func which take bill and return boolean </param>
+			    <param name="billItem_filter"> expression type of Func which take bill item and return boolean</param>
 			    <returns> Object of bill </returns>
 		</GetBillWithBillItemsWithItemAndColorAndMeasure>
 		<DeleteAllBillContentWithoutRetreiveDataToStore>
@@ -163,7 +163,7 @@
 			 <summary>
 				   Get list of bill id	  
 			</summary>
-			   <param name="filter">expression type of Func which take bill and return false </param>
+			   <param name="filter">expression type of Func which take bill and return boolean </param>
 			   <returns> list of bill id</returns>
 		</GetBillsIdFromItemQuantity>
 		<DateTimeNow>
